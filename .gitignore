@@ -1,0 +1,54 @@
+### --- Compilação e Binários ---
+# Ignora executáveis (Windows, Mac e Linux)
+*.exe
+*.out
+*.app
+# Ignora ficheiros de objeto e bibliotecas estáticas
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+
+### --- CLion / JetBrains ---
+# Ignora a pasta de configurações da IDE e as pastas de build automático
+.idea/
+cmake-build-*/
+*.iws
+*.iml
+*.ipr
+
+### --- Visual Studio Code ---
+# Ignora as configurações locais do VS Code dos teus colegas
+.vscode/
+.history/
+
+### --- Code::Blocks ---
+# Ignora ficheiros de projeto e dependências locais
+*.depend
+*.layout
+# Se decidirem usar APENAS CMake, podem ignorar o .cbp também:
+# *.cbp
+
+### --- CMake ---
+# Ignora ficheiros gerados pelo CMake (se alguém rodar fora da IDE)
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+### --- Sistema Operativo ---
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+desktop.ini
+
+### --- Outros ---
+# Ficheiros temporários e logs
+*.log
+*.tmp
