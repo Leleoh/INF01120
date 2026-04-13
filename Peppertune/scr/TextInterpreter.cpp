@@ -1,0 +1,1 @@
+//Arquivo inicial de lógica de interpretação de texto
