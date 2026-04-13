@@ -1,0 +1,1 @@
+//Arquivo de lógica para as vozes
