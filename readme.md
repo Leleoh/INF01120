@@ -1,9 +1,9 @@
 # INF01120 - Desenvolvimento de Software
-## UFRGS 2026 - Professor Marcelo Pimenta
+## PEPPERTUNE
 
 
 ## 📌 Descrição
-Esse repositório contém os arquivos do projeto desenvolvido na disciplina de Desenvolvimento de Software no Instituto de Informática da UFRGS.
+Esse repositório contém os arquivos do projeto desenvolvido na disciplina de Desenvolvimento de Software no Instituto de Informática da UFRGS, ministrada pelo professor Marcelo Pimenta em 2026/1.
 O objetivo é desenvolver a prática de programação modular com orientação a objetos.
 A linguagem escolhida para desenvolver o projeto foi C++.
 
@@ -13,7 +13,7 @@ A linguagem escolhida para desenvolver o projeto foi C++.
 - Pietro Cassara
 
 ## Git Workflow
-Para mantero código organizado, evitar conflitos de merge e rastrear funcionalidades entregues, será usado o **GitHub Flow** com foco em *Feature Branches* 
+Para manter o código organizado, evitar conflitos de merge e rastrear funcionalidades entregues, será usado o **GitHub Flow** com foco em *Feature Branches* 
 **NUNCA comite diretamente na `main` ou na `develop`.**
 
 ### 1. Nossas Branches Principais
