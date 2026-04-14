@@ -12,5 +12,21 @@ A linguagem escolhida para desenvolver o projeto foi C++.
 - Matheus Bello
 - Pietro Cassara
 
-## Docs
-Branches
+## Git Workflow
+Para mantero código organizado, evitar conflitos de merge e rastrear funcionalidades entregues, será usado o **GitHub Flow** com foco em *Feature Branches* 
+**NUNCA comite diretamente na `main` ou na `develop`.**
+
+### 1. Nossas Branches Principais
+* **`main`**: Código de produção. Só recebe código testado, aprovado e funcional.
+* **`develop`**: Nossa branch de integração. É o "ensaio geral" onde juntamos as partes de todo mundo antes de mandar para a `main`.
+
+### 2. Padrão de Nomenclatura (Nomes das Branches)
+Toda nova branch deve ser criada a partir da `develop` e deve ter um prefixo indicando o que está sendo feito, preferencialmente usando o idioma inglês para os prefixos:
+
+* **`feat/`** (Feature): Para desenvolvimento de novas funcionalidades.
+  * *Ex: `feat/issue-2-setup-inicial`*
+* **`fix/`** (Bugfix): Para correção de bugs em funcionalidades já existentes.
+  * *Ex: `fix/audio-estourando`*
+* **`docs/`** (Documentação): Para alterações no README, PDFs, croquis, etc.
+  * *Ex: `docs/att-diagrama-classes`*
+* **`refactor/`**: Para refatoração de código (melhorar o código sem adicionar funcionalidade nova).
