@@ -29,7 +29,7 @@ cmake-build-*/
 *.depend
 *.layout
 # Se decidirem usar APENAS CMake, podem ignorar o .cbp também:
-# *.cbp
+*.cbp
 
 ### --- CMake ---
 # Ignora ficheiros gerados pelo CMake (se alguém rodar fora da IDE)
