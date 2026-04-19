@@ -23,6 +23,17 @@ void MusicContext::raiseOctave(){
     }
 }
 
+void MusicContext::doubleVolume(){
+    if (volume * 2 <= 127){
+        volume = volume * 2;
+    } else{
+        volume = 127;
+    }
+}
+
+
+
+//Gets
 int MusicContext::getBpm() const{
     return bpm;
 }
