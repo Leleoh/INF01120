@@ -52,3 +52,6 @@ desktop.ini
 # Ficheiros temporários e logs
 *.log
 *.tmp
+
+# Ignora a pasta build do projeto Peppertune
+build/
