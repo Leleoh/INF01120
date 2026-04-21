@@ -2,20 +2,22 @@
 
 class MusicContext{
     private:
-    int bpm;
+    int voiceID;
     int volume;
-    int defaultOctave;
     int currentOctave;
     int currentInstrument;
 
     public:
-    MusicContext();
+    MusicContext(int id); //Exige id para saber quando surgir
 
-    void resetToDefault();
+    //Ações
+    void setInstrument(int newInstrumet);
     void raiseOctave();
     void doubleVolume();
+    void lowerOctave();
 
-    int getBpm() const;
+    //Ler o estado
+    int getVoiceID() const;
     int getVolume() const;
     int getCurrentOctave() const;
     int getCurrentInstrument() const;
