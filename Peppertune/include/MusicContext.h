@@ -1,19 +1,21 @@
 //Arquivo de interface do MusicContext
 
-class MusicContext{
-    private:
+#pragma once
+
+class MusicContext {
+private:
     int bpm;
     int volume;
     int defaultOctave;
     int currentOctave;
     int currentInstrument;
 
-    public:
+public:
     MusicContext();
-
     void resetToDefault();
     void raiseOctave();
     void doubleVolume();
+    void setInstrument(int instrument);   //Para general MIDI
 
     int getBpm() const;
     int getVolume() const;
