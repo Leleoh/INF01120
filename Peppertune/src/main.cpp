@@ -2,31 +2,24 @@
 #include <iostream>
 #include "MusicContext.h"
 #include "MusicTranslator.h"
+#include "TextInterpreter.h"
 
 int main(){
     
-    MusicContext testeVoz(0);
-    int bpmAtual = 120;
+    //Instancia do maestro (120 BPM por padrao)
+    TextInterpreter maestro;
 
+    maestro.parseFile("teste.txt");
 
-    //Parâmetros iniciais
-    std::cout << "--Estado inicial--" << std::endl;
-    std::cout << "Instrumento: " << testeVoz.getCurrentInstrument() << std::endl;
-    std::cout << "Volume: " << testeVoz.getVolume() << std::endl;
-    std::cout << "BPM: " << bpmAtual << std::endl;
+    std::cout << "BPM Global Final:" << maestro.getGlobalBPM() << std::endl;
 
-    //Transformações
-    MusicTranslator::applyMapping('!', testeVoz, bpmAtual); //Muda para harmonica (22)
-    MusicTranslator::applyMapping(' ', testeVoz, bpmAtual); //Dobra volume
-    MusicTranslator::applyMapping('<', testeVoz, bpmAtual); //Desacelera BPM
+    std::vector<MusicContext> vozes = maestro.getVoices();
 
-
-    //Resultados
-    std::cout << "\n--- APOS TRADUCAO (!, Espaco e <) ---" << std::endl;
-    std::cout << "Instrumento (deve ser 22): " << testeVoz.getCurrentInstrument() << std::endl;
-    std::cout << "Volume (deve travar em 127): " << testeVoz.getVolume() << std::endl; 
-    std::cout << "BPM (deve cair para 110): " << bpmAtual << std::endl;
-
+    for (MusicContext voz : vozes) {
+        std::cout << "\n--- Voz " << voz.getVoiceID() << " ---" << std::endl;
+        std::cout << "Instrumento: " << voz.getCurrentInstrument() << std::endl;
+        std::cout << "Volume: " << voz.getVolume() << std::endl;
+    }
 
     return 0;
 
