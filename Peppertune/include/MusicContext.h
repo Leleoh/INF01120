@@ -1,4 +1,6 @@
 //Arquivo de interface do MusicContext
+#ifndef MUSICCONTEXT_H
+#define MUSICCONTEXT_H
 
 class MusicContext{
     private:
@@ -22,3 +24,5 @@ class MusicContext{
     int getCurrentOctave() const;
     int getCurrentInstrument() const;
 };
+
+#endif

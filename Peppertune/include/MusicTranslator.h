@@ -11,10 +11,4 @@ class MusicTranslator{
 
 };
 
-
-
-
-
-
-
 #endif

@@ -31,12 +31,12 @@ void MusicTranslator::applyMapping(char letter, MusicContext& currentVoice, int&
 
 
     //Controles de BPM
-    case '<':
-        globalBPM += 10;
+    case '>':
+        globalBPM += 10; //Aumenta o bpm
         break;
     
-    case '>':
-        globalBPM -= 10;
+    case '<':
+        globalBPM -= 10; //Diminui o bpm
         break;
 
     //Caracteres para notas e pausas (FUTURAMENTE)
