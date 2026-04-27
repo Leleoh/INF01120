@@ -1,6 +1,6 @@
-//Interface MIDI
-
+// Interface MIDI
 #pragma once
+
 #include <string>
 #include <vector>
 #include "Voice.h"

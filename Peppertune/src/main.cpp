@@ -1,26 +1,35 @@
-//Arquivo main do Peppertune
-
 #include <iostream>
 #include "MusicContext.h"
+#include "TextInterpreter.h"
+#include "MidiGenerator.h"
 
 int main() {
-    std::cout << "=== Peppertune - Fase 2 (Passo 1 - Correções concluídas) ===\n\n";
+    std::cout << "=== Peppertune - Fase 2 ate o passo 7 ===\n\n";
 
     MusicContext contexto;
+    TextInterpreter interpreter(contexto);
+    MidiGenerator midiGenerator;
 
-    std::cout << "Volume inicial: " << contexto.getVolume() << std::endl;
-    contexto.doubleVolume();
-    std::cout << "Volume após dobrar: " << contexto.getVolume() << std::endl;
+    const std::string input =
+        "[0] C D E F ,\n"
+        "[4] > G A H C !\n"
+        "[2] ? A B C ;\n"
+        "[1] V G F E ,";
 
-    std::cout << "Oitava atual: " << contexto.getCurrentOctave() << std::endl;
-    contexto.raiseOctave();
-    std::cout << "Oitava após raiseOctave(): " << contexto.getCurrentOctave() << std::endl;
+    interpreter.loadText(input);
+    interpreter.interpret();
 
-    contexto.setInstrument(22); // Harmonica (general MIDI)
-    std::cout << "Instrumento atual: " << contexto.getCurrentInstrument() << " (Harmonica)\n";
+    const auto& voices = interpreter.getVoices();
 
-    std::cout << "\n✅ Todas as classes do passo 1 tão compilando!\n";
-    std::cout << "Rode o build e testa de novo.\n";
+    for (const auto& voice : voices) {
+        std::cout << "\nEventos da voz " << voice.getVoiceId() << ":\n";
+        for (const auto& event : voice.getEvents()) {
+            std::cout << "- " << event.description << '\n';
+        }
+    }
 
+    midiGenerator.generateAndPlay(voices);
+
+    std::cout << "\nBPM global final: " << contexto.getBpm() << std::endl;
     return 0;
 }

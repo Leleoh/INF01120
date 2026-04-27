@@ -1,10 +1,17 @@
-//Arquivo de lógica MIDI
-
+// Arquivo de lógica MIDI
 #include "MidiGenerator.h"
 #include <iostream>
 
 void MidiGenerator::generateAndPlay(const std::vector<Voice>& voices) {
-    std::cout << "[MidiGenerator] Gerando MIDI para " << voices.size() << " vozes (implementação completa no Passo 2)\n";
+    std::cout << "[MidiGenerator] Gerando eventos para " << voices.size()
+              << " vozes.\n";
+
+    for (const auto& voice : voices) {
+        std::cout << "[MidiGenerator] Voice " << voice.getVoiceId()
+                  << " | eventos=" << voice.getEvents().size()
+                  << " | delay=" << voice.getDelayBeats()
+                  << '\n';
+    }
 }
 
 void MidiGenerator::saveToFile(const std::string& filename) {
