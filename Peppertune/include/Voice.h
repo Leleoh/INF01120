@@ -6,8 +6,29 @@
 
 class MusicContext;
 
+enum class VoiceEventType {
+    Note,
+    Rest,
+    InstrumentChange,
+    BpmChange,
+    OctaveChange,
+    VolumeChange,
+    RepeatLastNote
+};
+
 struct VoiceEvent {
-    std::string description;
+    VoiceEventType type;
+    int voiceId;
+    int beat;
+    char symbol;
+    std::string pitch;
+    int duration;
+    int volume;
+    int instrument;
+    int bpm;
+    int octave;
+
+    std::string toString() const;
 };
 
 class Voice {
@@ -21,6 +42,7 @@ private:
     int currentVolume;
     int baseInstrument;
     int currentInstrument;
+    int currentBeat;
     char lastNote;
     std::vector<VoiceEvent> generatedEvents;
 
@@ -37,7 +59,11 @@ private:
     void handleInstrumentChange(char c);
     void handleOctaveChange(char c);
     void handleVolumeChange(char c);
+    void handleBpmChange(MusicContext& ctx, int delta);
+    void handleRepeatOrPause(char c);
     void createInitialSilenceEvents();
+
+    void addEvent(const VoiceEvent& event);
 
 public:
     Voice(int id = 0);
@@ -51,6 +77,7 @@ public:
     int getCurrentVolume() const;
     int getBaseInstrument() const;
     int getCurrentInstrument() const;
+    int getCurrentBeat() const;
     char getLastNote() const;
     const std::vector<VoiceEvent>& getEvents() const;
 
@@ -62,10 +89,9 @@ public:
     void setCurrentVolume(int volume);
     void setBaseInstrument(int instrument);
     void setCurrentInstrument(int instrument);
+    void setCurrentBeat(int beat);
     void setLastNote(char note);
 
-    void addEvent(const std::string& description);
     void clearEvents();
-
     void processLine(const std::string& line, MusicContext& ctx);
 };

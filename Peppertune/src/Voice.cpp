@@ -10,6 +10,69 @@ namespace {
 int clampInt(int value, int minValue, int maxValue) {
     return std::max(minValue, std::min(value, maxValue));
 }
+
+std::string noteToPitch(char noteChar, int octave) {
+    switch (noteChar) {
+        case 'A': return "A" + std::to_string(octave);
+        case 'B': return "B" + std::to_string(octave);
+        case 'C': return "C" + std::to_string(octave);
+        case 'D': return "D" + std::to_string(octave);
+        case 'E': return "E" + std::to_string(octave);
+        case 'F': return "F" + std::to_string(octave);
+        case 'G': return "G" + std::to_string(octave);
+        case 'H': return "Bb" + std::to_string(octave);
+        default:  return "REST";
+    }
+}
+}
+
+std::string VoiceEvent::toString() const {
+    std::string typeName;
+
+    switch (type) {
+        case VoiceEventType::Note: typeName = "NOTE"; break;
+        case VoiceEventType::Rest: typeName = "REST"; break;
+        case VoiceEventType::InstrumentChange: typeName = "INSTRUMENT_CHANGE"; break;
+        case VoiceEventType::BpmChange: typeName = "BPM_CHANGE"; break;
+        case VoiceEventType::OctaveChange: typeName = "OCTAVE_CHANGE"; break;
+        case VoiceEventType::VolumeChange: typeName = "VOLUME_CHANGE"; break;
+        case VoiceEventType::RepeatLastNote: typeName = "REPEAT_LAST_NOTE"; break;
+    }
+
+    std::string result =
+        typeName +
+        " voice=" + std::to_string(voiceId) +
+        " beat=" + std::to_string(beat);
+
+    if (!pitch.empty()) {
+        result += " pitch=" + pitch;
+    }
+
+    if (duration > 0) {
+        result += " duration=" + std::to_string(duration);
+    }
+
+    if (volume >= 0) {
+        result += " volume=" + std::to_string(volume);
+    }
+
+    if (instrument >= 0) {
+        result += " instrument=" + std::to_string(instrument);
+    }
+
+    if (bpm >= 0) {
+        result += " bpm=" + std::to_string(bpm);
+    }
+
+    if (octave >= 0) {
+        result += " octave=" + std::to_string(octave);
+    }
+
+    if (symbol != '\0') {
+        result += " symbol=" + std::string(1, symbol);
+    }
+
+    return result;
 }
 
 Voice::Voice(int id)
@@ -22,6 +85,7 @@ Voice::Voice(int id)
       currentVolume(80),
       baseInstrument(0),
       currentInstrument(0),
+      currentBeat(0),
       lastNote('\0') {
     configureDefaultsFromVoiceId();
 }
@@ -35,33 +99,23 @@ int Voice::getBaseVolume() const { return baseVolume; }
 int Voice::getCurrentVolume() const { return currentVolume; }
 int Voice::getBaseInstrument() const { return baseInstrument; }
 int Voice::getCurrentInstrument() const { return currentInstrument; }
+int Voice::getCurrentBeat() const { return currentBeat; }
 char Voice::getLastNote() const { return lastNote; }
 const std::vector<VoiceEvent>& Voice::getEvents() const { return generatedEvents; }
 
 void Voice::setRawLine(const std::string& line) { rawLine = line; }
 void Voice::setDelayBeats(int delay) { delayBeats = (delay >= 0) ? delay : 0; }
-void Voice::setBaseOctave(int octave) {
-    baseOctave = clampInt(octave, 0, 9);
-}
-void Voice::setCurrentOctave(int octave) {
-    currentOctave = clampInt(octave, 0, 9);
-}
-void Voice::setBaseVolume(int volume) {
-    baseVolume = clampInt(volume, 0, 127);
-}
-void Voice::setCurrentVolume(int volume) {
-    currentVolume = clampInt(volume, 0, 127);
-}
-void Voice::setBaseInstrument(int instrument) {
-    baseInstrument = clampInt(instrument, 0, 127);
-}
-void Voice::setCurrentInstrument(int instrument) {
-    currentInstrument = clampInt(instrument, 0, 127);
-}
+void Voice::setBaseOctave(int octave) { baseOctave = clampInt(octave, 0, 9); }
+void Voice::setCurrentOctave(int octave) { currentOctave = clampInt(octave, 0, 9); }
+void Voice::setBaseVolume(int volume) { baseVolume = clampInt(volume, 0, 127); }
+void Voice::setCurrentVolume(int volume) { currentVolume = clampInt(volume, 0, 127); }
+void Voice::setBaseInstrument(int instrument) { baseInstrument = clampInt(instrument, 0, 127); }
+void Voice::setCurrentInstrument(int instrument) { currentInstrument = clampInt(instrument, 0, 127); }
+void Voice::setCurrentBeat(int beat) { currentBeat = (beat >= 0) ? beat : 0; }
 void Voice::setLastNote(char note) { lastNote = note; }
 
-void Voice::addEvent(const std::string& description) {
-    generatedEvents.push_back({description});
+void Voice::addEvent(const VoiceEvent& event) {
+    generatedEvents.push_back(event);
 }
 
 void Voice::clearEvents() {
@@ -84,6 +138,7 @@ void Voice::configureDefaultsFromVoiceId() {
     setBaseInstrument(instrumentCycle[index]);
     setCurrentInstrument(baseInstrument);
 
+    setCurrentBeat(0);
     delayBeats = 0;
     lastNote = '\0';
 }
@@ -134,20 +189,37 @@ bool Voice::isUnmappedVowel(char c) const {
 void Voice::handleNote(char c) {
     setLastNote(c);
 
-    addEvent(
-        "NOTE voice=" + std::to_string(voiceId) +
-        " note=" + std::string(1, c) +
-        " octave=" + std::to_string(currentOctave) +
-        " volume=" + std::to_string(currentVolume) +
-        " instrument=" + std::to_string(currentInstrument)
-    );
+    addEvent({
+        VoiceEventType::Note,
+        voiceId,
+        currentBeat,
+        c,
+        noteToPitch(c, currentOctave),
+        1,
+        currentVolume,
+        currentInstrument,
+        -1,
+        currentOctave
+    });
+
+    ++currentBeat;
 }
 
 void Voice::handlePause(char c) {
-    addEvent(
-        "PAUSE voice=" + std::to_string(voiceId) +
-        " symbol=" + std::string(1, c)
-    );
+    addEvent({
+        VoiceEventType::Rest,
+        voiceId,
+        currentBeat,
+        c,
+        "",
+        1,
+        currentVolume,
+        currentInstrument,
+        -1,
+        currentOctave
+    });
+
+    ++currentBeat;
 }
 
 void Voice::handleInstrumentChange(char c) {
@@ -161,10 +233,18 @@ void Voice::handleInstrumentChange(char c) {
         setCurrentInstrument(110);
     }
 
-    addEvent(
-        "INSTRUMENT_CHANGE voice=" + std::to_string(voiceId) +
-        " instrument=" + std::to_string(currentInstrument)
-    );
+    addEvent({
+        VoiceEventType::InstrumentChange,
+        voiceId,
+        currentBeat,
+        c,
+        "",
+        0,
+        currentVolume,
+        currentInstrument,
+        -1,
+        currentOctave
+    });
 }
 
 void Voice::handleOctaveChange(char c) {
@@ -178,29 +258,108 @@ void Voice::handleOctaveChange(char c) {
         setCurrentOctave(currentOctave - 1);
     }
 
-    addEvent(
-        "OCTAVE_CHANGE voice=" + std::to_string(voiceId) +
-        " octave=" + std::to_string(currentOctave)
-    );
+    addEvent({
+        VoiceEventType::OctaveChange,
+        voiceId,
+        currentBeat,
+        c,
+        "",
+        0,
+        currentVolume,
+        currentInstrument,
+        -1,
+        currentOctave
+    });
 }
 
 void Voice::handleVolumeChange(char c) {
     if (c == ' ') {
         setCurrentVolume(std::min(currentVolume * 2, 127));
 
-        addEvent(
-            "VOLUME_CHANGE voice=" + std::to_string(voiceId) +
-            " volume=" + std::to_string(currentVolume)
-        );
+        addEvent({
+            VoiceEventType::VolumeChange,
+            voiceId,
+            currentBeat,
+            c,
+            "",
+            0,
+            currentVolume,
+            currentInstrument,
+            -1,
+            currentOctave
+        });
     }
+}
+
+void Voice::handleBpmChange(MusicContext& ctx, int delta) {
+    if (delta > 0) {
+        ctx.increaseBpm(delta);
+    } else {
+        ctx.decreaseBpm(-delta);
+    }
+
+    addEvent({
+        VoiceEventType::BpmChange,
+        voiceId,
+        currentBeat,
+        '\0',
+        "",
+        0,
+        currentVolume,
+        currentInstrument,
+        ctx.getBpm(),
+        currentOctave
+    });
+}
+
+void Voice::handleRepeatOrPause(char c) {
+    if (lastNote != '\0') {
+        addEvent({
+            VoiceEventType::RepeatLastNote,
+            voiceId,
+            currentBeat,
+            c,
+            noteToPitch(lastNote, currentOctave),
+            1,
+            currentVolume,
+            currentInstrument,
+            -1,
+            currentOctave
+        });
+    } else {
+        addEvent({
+            VoiceEventType::Rest,
+            voiceId,
+            currentBeat,
+            c,
+            "",
+            1,
+            currentVolume,
+            currentInstrument,
+            -1,
+            currentOctave
+        });
+    }
+
+    ++currentBeat;
 }
 
 void Voice::createInitialSilenceEvents() {
     for (int i = 0; i < delayBeats; ++i) {
-        addEvent(
-            "INITIAL_DELAY voice=" + std::to_string(voiceId) +
-            " beat=" + std::to_string(i + 1)
-        );
+        addEvent({
+            VoiceEventType::Rest,
+            voiceId,
+            currentBeat,
+            '\0',
+            "",
+            1,
+            currentVolume,
+            currentInstrument,
+            -1,
+            currentOctave
+        });
+
+        ++currentBeat;
     }
 }
 
@@ -231,38 +390,17 @@ void Voice::processChar(char c, MusicContext& ctx) {
     }
 
     if (c == '>') {
-        ctx.increaseBpm();
-        addEvent(
-            "BPM_CHANGE voice=" + std::to_string(voiceId) +
-            " bpm=" + std::to_string(ctx.getBpm())
-        );
+        handleBpmChange(ctx, 10);
         return;
     }
 
     if (c == '<') {
-        ctx.decreaseBpm();
-        addEvent(
-            "BPM_CHANGE voice=" + std::to_string(voiceId) +
-            " bpm=" + std::to_string(ctx.getBpm())
-        );
+        handleBpmChange(ctx, -10);
         return;
     }
 
     if (!std::isspace(static_cast<unsigned char>(c))) {
-        if (lastNote != '\0') {
-            addEvent(
-                "REPEAT_LAST_NOTE voice=" + std::to_string(voiceId) +
-                " note=" + std::string(1, lastNote) +
-                " octave=" + std::to_string(currentOctave) +
-                " volume=" + std::to_string(currentVolume) +
-                " instrument=" + std::to_string(currentInstrument)
-            );
-        } else {
-            addEvent(
-                "PAUSE voice=" + std::to_string(voiceId) +
-                " symbol=" + std::string(1, c)
-            );
-        }
+        handleRepeatOrPause(c);
     }
 }
 
@@ -285,6 +423,7 @@ void Voice::processLine(const std::string& line, MusicContext& ctx) {
               << " | baseVolume=" << baseVolume
               << " | baseInstrument=" << baseInstrument
               << " | currentInstrument=" << currentInstrument
+              << " | beatFinal=" << currentBeat
               << " | BPM global=" << ctx.getBpm()
               << std::endl;
 }
