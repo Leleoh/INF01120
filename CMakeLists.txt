@@ -1,14 +1,31 @@
-# Versão mínima do CMake
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14)
 
-# Nome do projeto
-project(Peppertune)
+project(Peppertune LANGUAGES CXX)
 
-# Ensina o compilador onde estão os "contratos" (.h)
-include_directories(include)
+# Encontra todos os arquivos .cpp dentro de Peppertune/src
+file(GLOB SOURCES "Peppertune/src/*.cpp")
 
-# Pega automaticamente todos os arquivos .cpp da pasta src
-file(GLOB SOURCES "src/*.cpp")
-
-# Cria o executável final juntando tudo
+# Cria o executável principal
 add_executable(peppertune ${SOURCES})
+
+# Inclui a pasta de headers para o executável principal
+target_include_directories(peppertune PRIVATE Peppertune/include)
+
+# Define o padrão C++
+target_compile_features(peppertune PRIVATE cxx_std_17)
+
+# ---------------------------------------------------------
+# Executável de testes
+add_executable(peppertune_tests
+    Peppertune/tests/test.cpp          # A porta de entrada com o int main()
+    Peppertune/src/MusicContext.cpp
+    Peppertune/src/TextInterpreter.cpp
+    Peppertune/src/MusicTranslator.cpp # O tradutor que faltava
+    Peppertune/src/Voice.cpp
+)
+
+# Inclui a pasta de headers TAMBÉM para o executável de testes
+target_include_directories(peppertune_tests PRIVATE Peppertune/include)
+
+# Define o padrão C++ TAMBÉM para o executável de testes
+target_compile_features(peppertune_tests PRIVATE cxx_std_17)
