@@ -16,7 +16,7 @@ void TextInterpreter::parseFile(const std::string& filepath){
 
     //Erro de abertura
     if (!file.is_open()){
-        std::cerr << "Erro: Não foi possível abrir o arquivo" << filepath << std::endl;
+        std::cerr << "Erro: Não foi possível abrir o arquivo " << filepath << std::endl;
         return;
     }
 
