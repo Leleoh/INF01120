@@ -4,9 +4,10 @@
 #include "MusicTranslator.h"
 #include <fstream>
 #include <iostream>
+#include "Constants.h"
 
 TextInterpreter::TextInterpreter(){
-    globalBPM = 120; //Garante que começa com 120
+    globalBPM = Peppertune::Constants::DEFAULT_BPM; //Garante que começa com 120
 }
 
 void TextInterpreter::parseFile(const std::string& filepath){
