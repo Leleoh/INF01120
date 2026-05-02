@@ -61,7 +61,7 @@ void MusicContext::setInstrument(int newInstrument){
 }
 
 
-//Gets
+//MARK: Gets
 int MusicContext::getVoiceID() const {
     return voiceID;
 }
