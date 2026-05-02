@@ -1,4 +1,5 @@
 #include "MusicTranslator.h"
+#include "Constants.h"
 
 //Função responsável por chamar as funções do MusicContext a partir dos parâmetros
 void MusicTranslator::applyMapping(char letter, MusicContext& currentVoice, int& globalBPM){
@@ -18,25 +19,25 @@ void MusicTranslator::applyMapping(char letter, MusicContext& currentVoice, int&
         break;
 
     case '!':
-        currentVoice.setInstrument(22); //Harmonica
+        currentVoice.setInstrument(Peppertune::Constants::INSTRUMENT_HARMONICA); //Harmonica
         break;
 
     case ';':
-        currentVoice.setInstrument(15); //Tubular bells
+        currentVoice.setInstrument(Peppertune::Constants::INSTRUMENT_TUBULAR_BELLS); //Tubular bells
         break;
 
     case ',':
-        currentVoice.setInstrument(20); //Church organ
+        currentVoice.setInstrument(Peppertune::Constants::INSTRUMENT_CHURCH_ORGAN); //Church organ
         break;
 
 
     //Controles de BPM
     case '>':
-        globalBPM += 10; //Aumenta o bpm
+        globalBPM += Peppertune::Constants::BPM_STEP; //Aumenta o bpm
         break;
     
     case '<':
-        globalBPM -= 10; //Diminui o bpm
+        globalBPM -= Peppertune::Constants::BPM_STEP; //Diminui o bpm
         break;
 
     //Caracteres para notas e pausas (FUTURAMENTE)
