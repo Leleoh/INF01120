@@ -30,3 +30,19 @@ Toda nova branch deve ser criada a partir da `develop` e deve ter um prefixo ind
 * **`docs/`** (Documentação): Para alterações no README, PDFs, croquis, etc.
   * *Ex: `docs/att-diagrama-classes`*
 * **`refactor/`**: Para refatoração de código (melhorar o código sem adicionar funcionalidade nova).
+
+### 3. Fluxo para criar uma nova branch
+1. Vá para a branch `develop`:
+   ```bash
+   git checkout develop
+   ```
+2. Atualize sua branch local com as últimas mudanças do repositório:
+   ```bash
+   git pull origin develop
+   ```
+3. Crie e mude para a sua nova branch (lembre-se de seguir o padrão de nomenclatura):
+   ```bash
+   git checkout -b tipo/nome-da-sua-branch
+   ```
+
+**Importante:** Todas as suas alterações devem ser integradas de volta à `develop` através de um **Merge (Pull Request)** a partir dessa sua branch. Nunca faça commits diretos na `develop`.
