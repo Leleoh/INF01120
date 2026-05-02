@@ -5,6 +5,7 @@
 //Construtor inicial
 MusicContext::MusicContext(int id){
     voiceID = id;
+    bpm = 120; // Default BPM
 
     int ciclo = id % 4;
 
@@ -75,4 +76,19 @@ int MusicContext::getCurrentOctave() const {
 
 int MusicContext::getCurrentInstrument() const {
     return currentInstrument;
+}
+
+// BPM
+int MusicContext::getBpm() const {
+    return bpm;
+}
+
+void MusicContext::increaseBpm(int delta) {
+    bpm += delta;
+}
+
+void MusicContext::decreaseBpm(int delta) {
+    if (bpm - delta > 0) {
+        bpm -= delta;
+    }
 }

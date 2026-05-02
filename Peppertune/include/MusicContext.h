@@ -8,6 +8,7 @@ class MusicContext{
     int volume;
     int currentOctave;
     int currentInstrument;
+    int bpm; // Added to satisfy Voice.cpp
 
     public:
     MusicContext(int id); //Exige id para saber quando surgir
@@ -23,6 +24,11 @@ class MusicContext{
     int getVolume() const;
     int getCurrentOctave() const;
     int getCurrentInstrument() const;
+    
+    // BPM methods para Voice.cpp
+    int getBpm() const;
+    void increaseBpm(int delta);
+    void decreaseBpm(int delta);
 };
 
 #endif

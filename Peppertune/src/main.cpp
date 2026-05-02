@@ -3,6 +3,7 @@
 #include "MusicContext.h"
 #include "MusicTranslator.h"
 #include "TextInterpreter.h"
+#include "MidiGenerator.h"
 
 int main(){
     
@@ -20,6 +21,11 @@ int main(){
         std::cout << "Instrumento: " << voz.getCurrentInstrument() << std::endl;
         std::cout << "Volume: " << voz.getVolume() << std::endl;
     }
+
+    // Executa a logica do gerador MIDI do colega
+    MidiGenerator midi;
+    midi.generateAndPlay(maestro.getAllVoiceEvents());
+    midi.saveToFile(maestro.getAllVoiceEvents());
 
     return 0;
 

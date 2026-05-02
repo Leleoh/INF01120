@@ -29,11 +29,16 @@ void TextInterpreter::parseFile(const std::string& filepath){
         //Instancia uma nova voz
         MusicContext newVoice(voiceID);
 
+        // Roda a lógica da funcionalidade do colega
+        Voice friendVoice(voiceID);
+        friendVoice.processLine(currentLine, newVoice);
+
         //Chama o tradutor para aplicar a função definida do mapeamento
         for (char letter: currentLine){
             MusicTranslator::applyMapping(letter, newVoice, globalBPM);
         }
 
+        allVoiceEvents.push_back(friendVoice.getEvents());
         voices.push_back(newVoice);
 
         voiceID++;
@@ -48,4 +53,8 @@ int TextInterpreter::getGlobalBPM() const{
 
 std::vector<MusicContext> TextInterpreter::getVoices() const{
     return voices;
+}
+
+std::vector<std::vector<VoiceEvent>> TextInterpreter::getAllVoiceEvents() const{
+    return allVoiceEvents;
 }

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "MusicContext.h"
+#include "Voice.h"
 
 class TextInterpreter{
     private:
@@ -13,6 +14,9 @@ class TextInterpreter{
 
     //Array dinâmico que guarda as vozes (linhas)
     std::vector<MusicContext> voices;
+    
+    //Armazena os eventos processados pela lógica do MidiGenerator
+    std::vector<std::vector<VoiceEvent>> allVoiceEvents;
 
     public:
     TextInterpreter();
@@ -23,6 +27,7 @@ class TextInterpreter{
     //Getters para gerar áudio
     int getGlobalBPM() const;
     std::vector<MusicContext> getVoices() const;
+    std::vector<std::vector<VoiceEvent>> getAllVoiceEvents() const;
 
 };
 
