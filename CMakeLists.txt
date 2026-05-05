@@ -2,17 +2,59 @@ cmake_minimum_required(VERSION 3.14)
 
 project(Peppertune LANGUAGES CXX)
 
+
+include(FetchContent)
+
+# ---- SDL3 ----
+FetchContent_Declare(
+    SDL3
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+    GIT_TAG release-3.2.0
+)
+FetchContent_MakeAvailable(SDL3)
+
+# ---- ImGui ----
+FetchContent_Declare(
+    imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG docking
+)
+FetchContent_MakeAvailable(imgui)
+
+# ---- OpenGL ----
+find_package(OpenGL REQUIRED)
+
+
 # Encontra todos os arquivos .cpp dentro de Peppertune/src
 file(GLOB SOURCES "Peppertune/src/*.cpp")
 
 # Cria o executável principal
-add_executable(peppertune ${SOURCES})
+add_executable(peppertune ${SOURCES}
+
+
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+)
 
 # Inclui a pasta de headers para o executável principal
-target_include_directories(peppertune PRIVATE Peppertune/include)
+target_include_directories(peppertune PRIVATE Peppertune/include
+    ${imgui_SOURCE_DIR}
+    ${imgui_SOURCE_DIR}/backends
+    )
 
 # Define o padrão C++
 target_compile_features(peppertune PRIVATE cxx_std_17)
+
+
+target_link_libraries(peppertune PRIVATE
+    SDL3::SDL3
+    OpenGL::GL
+)
 
 # ---------------------------------------------------------
 # Executável de testes
