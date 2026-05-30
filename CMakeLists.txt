@@ -115,3 +115,10 @@ target_link_libraries(peppertune_tests PRIVATE
     SDL3::SDL3
     OpenGL::GL
 )
+
+add_custom_command(TARGET peppertune_tests POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_RUNTIME_DLLS:peppertune_tests>
+        $<TARGET_FILE_DIR:peppertune_tests>
+    COMMAND_EXPAND_LISTS
+)
