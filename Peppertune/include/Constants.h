@@ -23,6 +23,8 @@ namespace Peppertune::Constants{
     constexpr int DEFAULT_OCTAVE = 5;
 
     //Configurações inicias
-    constexpr int DEFAULT_BPM = 120;
-    constexpr int BPM_STEP = 10;
+    inline constexpr int DEFAULT_BPM = 120;
+    inline constexpr int BPM_STEP = 10;
+    inline constexpr int TAMANHO_LARGURA = 1280;
+    inline constexpr int TAMANHO_ALTURA = 720;
 }
