@@ -22,6 +22,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui)
 
+# ---- Midifile ----
+FetchContent_Declare(
+    midifile
+    GIT_REPOSITORY https://github.com/craigsapp/midifile.git
+    GIT_TAG master
+)
+FetchContent_MakeAvailable(midifile)
+
 
 # ---- OpenGL ----
 find_package(OpenGL REQUIRED)
@@ -67,7 +75,7 @@ target_compile_features(peppertune PRIVATE cxx_std_17)
 target_link_libraries(peppertune PRIVATE
     SDL3::SDL3
     OpenGL::GL
-    
+    midifile
 )
 
 # ---------------------------------------------------------
@@ -114,6 +122,7 @@ target_compile_features(peppertune_tests PRIVATE cxx_std_17)
 target_link_libraries(peppertune_tests PRIVATE
     SDL3::SDL3
     OpenGL::GL
+    midifile
 )
 
 add_custom_command(TARGET peppertune_tests POST_BUILD
