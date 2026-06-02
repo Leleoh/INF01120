@@ -19,7 +19,11 @@ int main(int, char**)
     {
         ui.events();
         ui.widgets();
-        if (ui.play_button())
+        ui.spawnTextInput();
+        ui.spawnBpmWidget();
+        ui.spawnOctaveWidget();
+        ui.spawnVolumeWidget();
+        if (ui.spawnPlayButton())
         {
             // Handle play button click
             printf("Play button clicked!\n");

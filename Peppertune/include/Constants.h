@@ -3,8 +3,9 @@
 namespace Peppertune::Constants{
 
     //Valores globais de áudio
-    constexpr int MAX_VOLUME = 127;
+    constexpr int MAX_VOLUME = 100;
     constexpr int DEFAULT_VOLUME = 80;
+    constexpr int MIN_VOLUME = 0;
 
     //Perfis de voz
     constexpr int MAX_VOICE_PROFILES = 4; //Ciclos (rodízio) 0,1,2,3
@@ -25,6 +26,8 @@ namespace Peppertune::Constants{
     //Configurações inicias
     inline constexpr int DEFAULT_BPM = 120;
     inline constexpr int BPM_STEP = 10;
+    inline constexpr int MAX_BPM = 220;
+    inline constexpr int MIN_BPM = 1;
     inline constexpr int TAMANHO_LARGURA = 1280;
     inline constexpr int TAMANHO_ALTURA = 720;
 }
