@@ -3,8 +3,9 @@
 namespace Peppertune::Constants{
 
     //Valores globais de áudio
-    constexpr int MAX_VOLUME = 127;
+    constexpr int MAX_VOLUME = 100;
     constexpr int DEFAULT_VOLUME = 80;
+    constexpr int MIN_VOLUME = 0;
 
     //Perfis de voz
     constexpr int MAX_VOICE_PROFILES = 4; //Ciclos (rodízio) 0,1,2,3

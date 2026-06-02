@@ -22,6 +22,7 @@ int main(int, char**)
         ui.spawnTextInput();
         ui.spawnBpmWidget();
         ui.spawnOctaveWidget();
+        ui.spawnVolumeWidget();
         if (ui.spawnPlayButton())
         {
             // Handle play button click

@@ -15,7 +15,7 @@
 
 
 
-
+    //define todos os contextos para o SDL3 e OPENGL, além de criar a janela.
         void interface::begin(){
 
 
@@ -65,6 +65,9 @@
         ImGui_ImplOpenGL3_Init("#version 330");
         }
 
+
+
+        //processa os eventos do SDL3, como o fechamento da janela.
 void interface::events(){
 
         while (SDL_PollEvent(&event))
@@ -76,6 +79,7 @@ void interface::events(){
         }
 }
 
+    //Configura IMGUI para spawnar os widgets e o inicializa para o SDL3 e OpenGL.
 void interface::widgets(){
   // Início frame ImGui
         ImGui_ImplOpenGL3_NewFrame();
@@ -96,8 +100,8 @@ void interface::widgets(){
 
     
 }
-
-void interface::spawnTextInput(){
+//Spawna caixa de texto para input de música.
+void interface::spawnTextInput(){   
  ImGui::InputTextMultiline(
     "Coloque os parâmetros da música aqui",
     music_name,
@@ -105,17 +109,18 @@ void interface::spawnTextInput(){
     ImVec2(width - width/2, height)
 );
 }
-
+//get de dados de input de música.
 const char* interface::get_text_input(){
         return music_name;
 
 }
-
+//Spawna caixa de int para input de BPM.
 void interface::spawnBpmWidget(){
     ImGui::SetCursorPos(ImVec2(width/2 + width/72, height/12));
     ImGui::SetNextItemWidth(width/8);
     ImGui::InputInt("BPM", &startingBpm);
 
+        //Não deixa o usuário colocar um BPM fora dos limites pré-definidos.
         if (startingBpm > Peppertune::Constants::MAX_BPM) {
             startingBpm = Peppertune::Constants::MAX_BPM;
         }
@@ -123,11 +128,13 @@ void interface::spawnBpmWidget(){
             startingBpm = Peppertune::Constants::MIN_BPM;
         }
 }
-   
+
+//get de dados de input de BPM.
 int interface::getBpmInput(){
     return startingBpm;
 }
 
+//spawna bottão de play
 bool interface::spawnPlayButton(){
 
     ImGui::SetCursorPos(ImVec2(width - 3*width/8, height/4));
@@ -137,11 +144,14 @@ bool interface::spawnPlayButton(){
     return ImGui::IsItemClicked();
 }
 
+
+//spawna caixa de int para input de oitava.
 void interface::spawnOctaveWidget(){
     ImGui::SetCursorPos(ImVec2(width/2 + width/6, height/12));
     ImGui::SetNextItemWidth(width/8);
     ImGui::InputInt("OCTAVE", &startingOctave);
 
+        //Não deixa o usuário colocar uma oitava fora dos limites pré-definidos.
         if (startingOctave > Peppertune::Constants::MAX_OCTAVE) {
             startingOctave = Peppertune::Constants::MAX_OCTAVE;
         }
@@ -150,10 +160,33 @@ void interface::spawnOctaveWidget(){
         }
 }
 
+//get de dados de input de oitava.
 int interface::getOctaveInput(){
     return startingOctave;
 }
 
+
+//spawna caixa de int para input de volume.
+void interface::spawnVolumeWidget(){
+    ImGui::SetCursorPos(ImVec2(width/2 + width/3, height/12));
+    ImGui::SetNextItemWidth(width/8);
+    ImGui::InputInt("VOLUME", &startingVolume);
+
+        //Não deixa o usuário colocar um volume fora dos limites pré-definidos.
+        if (startingVolume > Peppertune::Constants::MAX_VOLUME) {
+            startingVolume = Peppertune::Constants::MAX_VOLUME;
+        }
+        else if (startingVolume < Peppertune::Constants::MIN_VOLUME) {
+            startingVolume = Peppertune::Constants::MIN_VOLUME;
+        }
+}
+
+//get de dados de input de volume.
+int interface::getVolumeInput(){
+    return startingVolume;
+}
+
+//Finaliza o frame do ImGui, renderiza e atualiza a janela.
 void interface::end(){
 
     ImGui::End();
@@ -177,6 +210,7 @@ void interface::end(){
 
 }
 
+//termina os processos de janela e contexto do SDL3 e OpenGL, além de destruir a janela.
 void interface::cleanup(){
     // Cleanup
     ImGui_ImplOpenGL3_Shutdown();

@@ -14,18 +14,25 @@ class interface{
         char music_name[128] = "Coloque aqui seu input para música";
         int startingBpm = Peppertune::Constants::DEFAULT_BPM;
         int startingOctave = Peppertune::Constants::DEFAULT_OCTAVE;
+        int startingVolume = Peppertune::Constants::DEFAULT_VOLUME;
     public:
+        //Funções de interface
         void begin();
         void events();
         void widgets();
         void end();
         void cleanup();
-        const char* get_text_input();
+        //Spawn de widgets
         bool spawnPlayButton();
         void spawnBpmWidget();
-        int getBpmInput();
         void spawnTextInput();
         void spawnOctaveWidget();
+        void spawnVolumeWidget();
+        //Getters
+        int getBpmInput();
+        const char* get_text_input();
         int getOctaveInput();
+        int getVolumeInput();
+
 
 };
