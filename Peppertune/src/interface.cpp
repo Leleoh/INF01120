@@ -21,6 +21,7 @@
 
             height = Peppertune::Constants::TAMANHO_ALTURA;
             width = Peppertune::Constants::TAMANHO_LARGURA;
+            startingBpm = Peppertune::Constants::DEFAULT_BPM;
             SDL_Init(SDL_INIT_VIDEO);
 
              SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -93,28 +94,64 @@ void interface::widgets(){
     ImGuiIO& io = ImGui::GetIO();
 
 
-        
+    
+}
+
+void interface::spawnTextInput(){
  ImGui::InputTextMultiline(
-    "Coloque sua entrada para gerar a música aqui",
+    "Coloque os parâmetros da música aqui",
     music_name,
     128,
     ImVec2(width - width/2, height)
 );
-    
 }
 
 const char* interface::get_text_input(){
         return music_name;
 
 }
+
+void interface::spawnBpmWidget(){
+    ImGui::SetCursorPos(ImVec2(width/2 + width/72, height/12));
+    ImGui::SetNextItemWidth(width/8);
+    ImGui::InputInt("BPM", &startingBpm);
+
+        if (startingBpm > Peppertune::Constants::MAX_BPM) {
+            startingBpm = Peppertune::Constants::MAX_BPM;
+        }
+        else if (startingBpm < Peppertune::Constants::MIN_BPM) {
+            startingBpm = Peppertune::Constants::MIN_BPM;
+        }
+}
    
-bool interface::play_button(){
+int interface::getBpmInput(){
+    return startingBpm;
+}
+
+bool interface::spawnPlayButton(){
 
     ImGui::SetCursorPos(ImVec2(width - 3*width/8, height/4));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 999.0f);
     ImGui::Button("play", ImVec2(width/4, height/2));
     ImGui::PopStyleVar();
     return ImGui::IsItemClicked();
+}
+
+void interface::spawnOctaveWidget(){
+    ImGui::SetCursorPos(ImVec2(width/2 + width/6, height/12));
+    ImGui::SetNextItemWidth(width/8);
+    ImGui::InputInt("OCTAVE", &startingOctave);
+
+        if (startingOctave > Peppertune::Constants::MAX_OCTAVE) {
+            startingOctave = Peppertune::Constants::MAX_OCTAVE;
+        }
+        else if (startingOctave < Peppertune::Constants::MIN_OCTAVE) {
+            startingOctave = Peppertune::Constants::MIN_OCTAVE;
+        }
+}
+
+int interface::getOctaveInput(){
+    return startingOctave;
 }
 
 void interface::end(){
