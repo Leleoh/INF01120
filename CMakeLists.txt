@@ -76,6 +76,7 @@ target_link_libraries(peppertune PRIVATE
 add_executable(peppertune_tests
     Peppertune/tests/sdl_test.cpp
     Peppertune/src/interface.cpp
+    Peppertune/src/tinyfiledialogs.cpp
     
 
 

@@ -11,11 +11,59 @@
 #include <iostream>
 #include "stdio.h"
 #include <string>
+#include "tinyfiledialogs.h"
+#include <fstream>
+#include <string>
+
+    void interface::saveFile(){
+
+        {
+
+    const char* path = tinyfd_saveFileDialog(
+        "Save text file",
+        "file.txt",
+        0,
+        NULL,
+        NULL
+    );
+
+    if(path) {
+        std::ofstream file(path);
+        file << get_text_input() << std::endl;
+    }
+}
+    }
+
+    void interface::loadFile(){
+    const char* filePath = tinyfd_openFileDialog(
+        "Open text file",
+        "",
+        1,
+        (const char*[]){"*.txt"},
+        "Text files",
+        0
+    );
+
+    if (!filePath)
+        printf("No file selected\n");
+
+    std::ifstream file(filePath);
+
+    if (!file.is_open()) {
+        std::cout << "Could not open file\n";
+    }
 
 
+    file.read(music_name, sizeof(music_name) - 1);
+
+    // important: terminate the C string
+    music_name[file.gcount()] = '\0';
 
 
-    //define todos os contextos para o SDL3 e OPENGL, além de criar a janela.
+    file.close();
+
+}
+
         void interface::begin(){
 
 
@@ -184,6 +232,26 @@ void interface::spawnVolumeWidget(){
 //get de dados de input de volume.
 int interface::getVolumeInput(){
     return startingVolume;
+}
+
+
+
+void interface::spawnSaveButton(){
+    ImGui::SetCursorPos(ImVec2(width/2 + width/9, height/2 + height/3));
+    ImGui::SetNextItemWidth(width/8);
+    ImGui::Button("SAVE", ImVec2(width/8, height/12));
+    if (ImGui::IsItemClicked()) {
+        saveFile();
+    }
+}
+
+void interface::SpawnLoadButton(){
+    ImGui::SetCursorPos(ImVec2(width/2 + width/4, height/2 + height/3));
+    ImGui::SetNextItemWidth(width/8);
+    ImGui::Button("LOAD", ImVec2(width/8, height/12));
+    if (ImGui::IsItemClicked()) {
+        loadFile();
+    }
 }
 
 //Finaliza o frame do ImGui, renderiza e atualiza a janela.
