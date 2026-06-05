@@ -13,56 +13,8 @@
 #include <string>
 #include "tinyfiledialogs.h"
 #include <fstream>
-#include <string>
-
-    void interface::saveFile(){
-
-        {
-
-    const char* path = tinyfd_saveFileDialog(
-        "Save text file",
-        "file.txt",
-        0,
-        NULL,
-        NULL
-    );
-
-    if(path) {
-        std::ofstream file(path);
-        file << get_text_input() << std::endl;
-    }
-}
-    }
-
-    void interface::loadFile(){
-    const char* filePath = tinyfd_openFileDialog(
-        "Open text file",
-        "",
-        1,
-        (const char*[]){"*.txt"},
-        "Text files",
-        0
-    );
-
-    if (!filePath)
-        printf("No file selected\n");
-
-    std::ifstream file(filePath);
-
-    if (!file.is_open()) {
-        std::cout << "Could not open file\n";
-    }
 
 
-    file.read(music_name, sizeof(music_name) - 1);
-
-    // important: terminate the C string
-    music_name[file.gcount()] = '\0';
-
-
-    file.close();
-
-}
 
         void interface::begin(){
 
@@ -290,4 +242,54 @@ void interface::cleanup(){
     SDL_DestroyWindow(window);
 
     SDL_Quit();
+}
+
+
+    void interface::saveFile(){
+
+        {
+
+    const char* path = tinyfd_saveFileDialog(
+        "Save text file",
+        "file.txt",
+        0,
+        NULL,
+        NULL
+    );
+
+    if(path) {
+        std::ofstream file(path);
+        file << get_text_input() << std::endl;
+    }
+}
+    }
+
+    void interface::loadFile(){
+    const char* filePath = tinyfd_openFileDialog(
+        "Open text file",
+        "",
+        1,
+        (const char*[]){"*.txt"},
+        "Text files",
+        0
+    );
+
+    if (!filePath)
+        printf("No file selected\n");
+
+    std::ifstream file(filePath);
+
+    if (!file.is_open()) {
+        std::cout << "Could not open file\n";
+    }
+
+
+    file.read(music_name, sizeof(music_name) - 1);
+
+    // important: terminate the C string
+    music_name[file.gcount()] = '\0';
+
+
+    file.close();
+
 }
