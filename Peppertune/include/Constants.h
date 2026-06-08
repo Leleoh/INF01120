@@ -8,7 +8,7 @@ namespace Peppertune::Constants{
     constexpr int MIN_VOLUME = 0;
 
     //Perfis de voz
-    constexpr int MAX_VOICE_PROFILES = 4; //Ciclos (rodízio) 0,1,2,3
+    constexpr int MAX_VOICES = 4; //Ciclos (rodízio) 0,1,2,3
 
     // Instrumentos MIDI
     constexpr int INSTRUMENT_PIANO = 0;
