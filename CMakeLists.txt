@@ -22,6 +22,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui)
 
+# ---- Midifile ----
+#set(BUILD_MIDILIBRARY_ONLY ON CACHE BOOL "Build only the library" FORCE)
+#FetchContent_Declare(
+#    midifile
+#    GIT_REPOSITORY https://github.com/craigsapp/midifile.git
+#    GIT_TAG master
+#)
+#FetchContent_MakeAvailable(midifile)
+
 
 # ---- OpenGL ----
 find_package(OpenGL REQUIRED)
@@ -55,6 +64,7 @@ target_include_directories(peppertune PRIVATE
     Peppertune/include
     ${imgui_SOURCE_DIR}
     ${imgui_SOURCE_DIR}/backends
+  #  ${midifile_SOURCE_DIR}/include
 )
 
 # Define o padrão C++
@@ -67,7 +77,7 @@ target_compile_features(peppertune PRIVATE cxx_std_17)
 target_link_libraries(peppertune PRIVATE
     SDL3::SDL3
     OpenGL::GL
-    
+   # midifile
 )
 
 # ---------------------------------------------------------
@@ -77,6 +87,7 @@ add_executable(peppertune_tests
     Peppertune/tests/sdl_test.cpp
     Peppertune/src/interface.cpp
     Peppertune/src/tinyfiledialogs.cpp
+    Peppertune/src/TextParser.cpp
     
 
 
@@ -106,6 +117,7 @@ target_include_directories(peppertune_tests PRIVATE
     Peppertune/include
     ${imgui_SOURCE_DIR}
     ${imgui_SOURCE_DIR}/backends
+    #${midifile_SOURCE_DIR}/include
 )
 
 
@@ -115,6 +127,7 @@ target_compile_features(peppertune_tests PRIVATE cxx_std_17)
 target_link_libraries(peppertune_tests PRIVATE
     SDL3::SDL3
     OpenGL::GL
+    #midifile
 )
 
 if(WIN32)
