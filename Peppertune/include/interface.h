@@ -28,11 +28,16 @@ class interface{
         void spawnTextInput();
         void spawnOctaveWidget();
         void spawnVolumeWidget();
+        void spawnSaveButton();
+        void SpawnLoadButton();
         //Getters
         int getBpmInput();
         const char* get_text_input();
         int getOctaveInput();
         int getVolumeInput();
+        //files
+        void saveFile();
+        void loadFile();
 
 
 };

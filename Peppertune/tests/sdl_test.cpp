@@ -26,6 +26,8 @@ int main(int, char**)
         ui.spawnBpmWidget();
         ui.spawnOctaveWidget();
         ui.spawnVolumeWidget();
+        ui.SpawnLoadButton();
+        ui.spawnSaveButton();
         if (ui.spawnPlayButton())
         {
             // Handle play button click
