@@ -129,6 +129,7 @@ target_link_libraries(peppertune_tests PRIVATE
     OpenGL::GL
     #midifile
 )
+#teste aleatorio para ver se o github ta funcionando
 
 if(WIN32)
     foreach(target peppertune peppertune_tests)
