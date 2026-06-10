@@ -410,6 +410,10 @@ void Voice::processLine(const std::string& line, MusicContext& ctx) {
     clearEvents();
     configureDefaultsFromVoiceId();
 
+    // Emite os eventos de configuração inicial para que o arquivo MIDI grave o instrumento e volume padrão, e não apenas o Piano.
+    addEvent({VoiceEventType::InstrumentChange, voiceId, 0, '\0', "", 0, currentVolume, currentInstrument, -1, currentOctave});
+    addEvent({VoiceEventType::VolumeChange, voiceId, 0, '\0', "", 0, currentVolume, currentInstrument, -1, currentOctave});
+
     std::string content = parseInitialDelay(line);
     createInitialSilenceEvents();
 

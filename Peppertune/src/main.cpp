@@ -10,7 +10,7 @@ int main(){
     //Instancia do maestro (120 BPM por padrao)
     TextInterpreter maestro;
 
-    maestro.parseFile("C:/Users/leone/Desktop/INF01120/Peppertune/teste.txt");
+    maestro.parseFile("teste.txt");
 
     std::cout << "BPM Global Final:" << maestro.getGlobalBPM() << std::endl;
 
