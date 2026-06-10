@@ -1,22 +1,34 @@
 //Arquivo de interface do MusicContext
+#ifndef MUSICCONTEXT_H
+#define MUSICCONTEXT_H
 
 class MusicContext{
     private:
-    int bpm;
+    int voiceID;
     int volume;
-    int defaultOctave;
     int currentOctave;
     int currentInstrument;
+    int bpm; // Added to satisfy Voice.cpp
 
     public:
-    MusicContext();
+    MusicContext(int id); //Exige id para saber quando surgir
 
-    void resetToDefault();
+    //Ações
+    void setInstrument(int newInstrumet);
     void raiseOctave();
     void doubleVolume();
+    void lowerOctave();
 
-    int getBpm() const;
+    //Ler o estado
+    int getVoiceID() const;
     int getVolume() const;
     int getCurrentOctave() const;
     int getCurrentInstrument() const;
+    
+    // BPM methods para Voice.cpp
+    int getBpm() const;
+    void increaseBpm(int delta);
+    void decreaseBpm(int delta);
 };
+
+#endif

@@ -3,49 +3,92 @@
 #include "MusicContext.h" //De acordo com o protocolo da interface
 
 //Construtor inicial
-MusicContext::MusicContext(){
-    resetToDefault();
-}
+MusicContext::MusicContext(int id){
+    voiceID = id;
+    bpm = 120; // Default BPM
 
-void MusicContext::resetToDefault(){
-    bpm = 120;
-    volume = 80;
-    defaultOctave = 5;
-    currentOctave = 5;
-    currentInstrument = 0;
-}
+    int ciclo = id % 4;
 
-void MusicContext::raiseOctave(){
-    if (currentOctave < 9){
-        currentOctave++; //Incrementa até 9
-    } else{
-        currentOctave = defaultOctave; //Do contrário reseta pra 5
+    if (ciclo == 0){
+        currentOctave = 6;
+        volume = 100;
+        currentInstrument = 6;  //Cravo
+    }
+    else if(ciclo == 1){
+        currentOctave = 5;
+        volume = 80;
+        currentInstrument = 20; //Órgão
+    }
+    else if(ciclo == 2){
+        currentOctave = 4;
+        volume = 60;
+        currentInstrument = 0;  //Piano
+    }
+    else if(ciclo == 3){
+        currentOctave = 3;
+        volume = 40;
+        currentInstrument = 70;  //Fagote
     }
 }
 
+//Controle de oitavas
+void MusicContext::raiseOctave(){
+    if (currentOctave < 9){
+        currentOctave++; //Incrementa até 9
+    }
+}
+
+void MusicContext::lowerOctave(){
+    if (currentOctave > 0){
+        currentOctave--;
+    }
+}
+
+//Volume
 void MusicContext::doubleVolume(){
     if (volume * 2 <= 127){
         volume = volume * 2;
     } else{
-        volume = 127;
+        volume = 127;   //Volume no máximo
+    }
+}
+
+//Instrumento
+void MusicContext::setInstrument(int newInstrument){
+    if (newInstrument >= 0 && newInstrument <= 127){
+        currentInstrument = newInstrument;
     }
 }
 
 
-
-//Gets
-int MusicContext::getBpm() const{
-    return bpm;
+//MARK: Gets
+int MusicContext::getVoiceID() const {
+    return voiceID;
 }
 
-int MusicContext::getVolume() const{
+int MusicContext::getVolume() const {
     return volume;
 }
 
-int MusicContext::getCurrentOctave() const{
+int MusicContext::getCurrentOctave() const {
     return currentOctave;
 }
 
-int MusicContext::getCurrentInstrument() const{
+int MusicContext::getCurrentInstrument() const {
     return currentInstrument;
+}
+
+// BPM
+int MusicContext::getBpm() const {
+    return bpm;
+}
+
+void MusicContext::increaseBpm(int delta) {
+    bpm += delta;
+}
+
+void MusicContext::decreaseBpm(int delta) {
+    if (bpm - delta > 0) {
+        bpm -= delta;
+    }
 }
