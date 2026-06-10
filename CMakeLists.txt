@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.14)
 
 project(Peppertune LANGUAGES C CXX)
 
+if(MSVC)
+    add_compile_options(/FS)
+endif()
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(FetchContent)
@@ -23,13 +27,13 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(imgui)
 
 # ---- Midifile ----
-#set(BUILD_MIDILIBRARY_ONLY ON CACHE BOOL "Build only the library" FORCE)
-#FetchContent_Declare(
-#    midifile
-#    GIT_REPOSITORY https://github.com/craigsapp/midifile.git
-#    GIT_TAG master
-#)
-#FetchContent_MakeAvailable(midifile)
+set(BUILD_MIDILIBRARY_ONLY ON CACHE BOOL "Build only the library" FORCE)
+FetchContent_Declare(
+    midifile
+    GIT_REPOSITORY https://github.com/craigsapp/midifile.git
+    GIT_TAG master
+)
+FetchContent_MakeAvailable(midifile)
 
 
 # ---- OpenGL ----
@@ -64,7 +68,7 @@ target_include_directories(peppertune PRIVATE
     Peppertune/include
     ${imgui_SOURCE_DIR}
     ${imgui_SOURCE_DIR}/backends
-  #  ${midifile_SOURCE_DIR}/include
+    ${midifile_SOURCE_DIR}/include
 )
 
 # Define o padrão C++
@@ -77,7 +81,7 @@ target_compile_features(peppertune PRIVATE cxx_std_17)
 target_link_libraries(peppertune PRIVATE
     SDL3::SDL3
     OpenGL::GL
-   # midifile
+    midifile
 )
 
 # ---------------------------------------------------------
@@ -117,7 +121,7 @@ target_include_directories(peppertune_tests PRIVATE
     Peppertune/include
     ${imgui_SOURCE_DIR}
     ${imgui_SOURCE_DIR}/backends
-    #${midifile_SOURCE_DIR}/include
+    ${midifile_SOURCE_DIR}/include
 )
 
 
@@ -127,7 +131,7 @@ target_compile_features(peppertune_tests PRIVATE cxx_std_17)
 target_link_libraries(peppertune_tests PRIVATE
     SDL3::SDL3
     OpenGL::GL
-    #midifile
+    midifile
 )
 #teste aleatorio para ver se o github ta funcionando
 

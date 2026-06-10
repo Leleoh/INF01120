@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 
-//#include "MidiFile.h"
+#include "MidiFile.h"
 
 #define TSF_IMPLEMENTATION
 #include "tsf.h"

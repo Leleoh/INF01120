@@ -101,14 +101,14 @@ void interface::widgets(){
     
 }
 //Spawna caixa de texto para input de música.
-void interface::spawnTextInput(){   
- ImGui::InputTextMultiline(
-    "Coloque os parâmetros da música aqui",
-    music_name,
-    128,
-    ImVec2(width - width/2, height)
-);
-}
+ void interface::spawnTextInput(){   
+  ImGui::InputTextMultiline(
+     "Coloque os parâmetros da música aqui",
+     music_name,
+     128,
+     ImVec2(static_cast<float>(width - width/2), static_cast<float>(height))
+ );
+ }
 //get de dados de input de música.
 const char* interface::get_text_input(){
         return music_name;
@@ -116,8 +116,8 @@ const char* interface::get_text_input(){
 }
 //Spawna caixa de int para input de BPM.
 void interface::spawnBpmWidget(){
-    ImGui::SetCursorPos(ImVec2(width/2 + width/72, height/12));
-    ImGui::SetNextItemWidth(width/8);
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(width/2 + width/72), static_cast<float>(height/12)));
+    ImGui::SetNextItemWidth(static_cast<float>(width/8));
     ImGui::InputInt("BPM", &startingBpm);
 
         //Não deixa o usuário colocar um BPM fora dos limites pré-definidos.
@@ -137,9 +137,9 @@ int interface::getBpmInput(){
 //spawna bottão de play
 bool interface::spawnPlayButton(){
 
-    ImGui::SetCursorPos(ImVec2(width - 3*width/8, height/4));
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(width - 3*width/8), static_cast<float>(height/4)));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 999.0f);
-    ImGui::Button("play", ImVec2(width/4, height/2));
+    ImGui::Button("play", ImVec2(static_cast<float>(width/4), static_cast<float>(height/2)));
     ImGui::PopStyleVar();
     return ImGui::IsItemClicked();
 }
@@ -147,8 +147,8 @@ bool interface::spawnPlayButton(){
 
 //spawna caixa de int para input de oitava.
 void interface::spawnOctaveWidget(){
-    ImGui::SetCursorPos(ImVec2(width/2 + width/6, height/12));
-    ImGui::SetNextItemWidth(width/8);
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(width/2 + width/6), static_cast<float>(height/12)));
+    ImGui::SetNextItemWidth(static_cast<float>(width/8));
     ImGui::InputInt("OCTAVE", &startingOctave);
 
         //Não deixa o usuário colocar uma oitava fora dos limites pré-definidos.
@@ -168,8 +168,8 @@ int interface::getOctaveInput(){
 
 //spawna caixa de int para input de volume.
 void interface::spawnVolumeWidget(){
-    ImGui::SetCursorPos(ImVec2(width/2 + width/3, height/12));
-    ImGui::SetNextItemWidth(width/8);
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(width/2 + width/3), static_cast<float>(height/12)));
+    ImGui::SetNextItemWidth(static_cast<float>(width/8));
     ImGui::InputInt("VOLUME", &startingVolume);
 
         //Não deixa o usuário colocar um volume fora dos limites pré-definidos.
@@ -189,18 +189,18 @@ int interface::getVolumeInput(){
 
 
 void interface::spawnSaveButton(){
-    ImGui::SetCursorPos(ImVec2(width/2 + width/9, height/2 + height/3));
-    ImGui::SetNextItemWidth(width/8);
-    ImGui::Button("SAVE", ImVec2(width/8, height/12));
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(width/2 + width/9), static_cast<float>(height/2 + height/3)));
+    ImGui::SetNextItemWidth(static_cast<float>(width/8));
+    ImGui::Button("SAVE", ImVec2(static_cast<float>(width/8), static_cast<float>(height/12)));
     if (ImGui::IsItemClicked()) {
         saveFile();
     }
 }
 
 void interface::SpawnLoadButton(){
-    ImGui::SetCursorPos(ImVec2(width/2 + width/4, height/2 + height/3));
-    ImGui::SetNextItemWidth(width/8);
-    ImGui::Button("LOAD", ImVec2(width/8, height/12));
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(width/2 + width/4), static_cast<float>(height/2 + height/3)));
+    ImGui::SetNextItemWidth(static_cast<float>(width/8));
+    ImGui::Button("LOAD", ImVec2(static_cast<float>(width/8), static_cast<float>(height/12)));
     if (ImGui::IsItemClicked()) {
         loadFile();
     }
@@ -265,11 +265,12 @@ void interface::cleanup(){
     }
 
     void interface::loadFile(){
+    const char* filterPatterns[] = {"*.txt"};
     const char* filePath = tinyfd_openFileDialog(
         "Open text file",
         "",
         1,
-        (const char*[]){"*.txt"},
+        filterPatterns,
         "Text files",
         0
     );
