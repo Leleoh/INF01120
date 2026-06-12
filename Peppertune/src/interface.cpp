@@ -186,6 +186,27 @@ int interface::getVolumeInput(){
     return startingVolume;
 }
 
+void interface::setErrorWindow(bool show, const char* message){
+    showErrorWindow = show;
+    errorMessage = message;
+}
+
+void interface::spawnErrorMessage(){
+
+    if (showErrorWindow) {
+    ImGui::SetNextWindowSize(
+        ImVec2(500, 300)
+            );
+
+        // Interface
+        ImGui::Begin("janela de erro", &showErrorWindow);
+
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(0), static_cast<float>(30)));
+    ImGui::Text("Erro: %s", errorMessage.c_str());
+
+    ImGui::End();
+}
+}
 
 
 void interface::spawnSaveButton(){
@@ -197,7 +218,7 @@ void interface::spawnSaveButton(){
     }
 }
 
-void interface::SpawnLoadButton(){
+void interface::spawnLoadButton(){
     ImGui::SetCursorPos(ImVec2(static_cast<float>(width/2 + width/4), static_cast<float>(height/2 + height/3)));
     ImGui::SetNextItemWidth(static_cast<float>(width/8));
     ImGui::Button("LOAD", ImVec2(static_cast<float>(width/8), static_cast<float>(height/12)));

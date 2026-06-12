@@ -3,6 +3,7 @@
 #include "Constants.h"
 
 #include <SDL3/SDL.h>
+#include <string>
 
 class interface{
     private:
@@ -15,6 +16,8 @@ class interface{
         int startingBpm = Peppertune::Constants::DEFAULT_BPM;
         int startingOctave = Peppertune::Constants::DEFAULT_OCTAVE;
         int startingVolume = Peppertune::Constants::DEFAULT_VOLUME;
+        bool showErrorWindow = false; // variable used to show the error window
+        std::string errorMessage; // variable used to store the error message to be shown in the error window
     public:
         //Funções de interface
         void begin();
@@ -29,7 +32,9 @@ class interface{
         void spawnOctaveWidget();
         void spawnVolumeWidget();
         void spawnSaveButton();
-        void SpawnLoadButton();
+        void spawnLoadButton();
+        void spawnErrorMessage(); //makes it so that when showErrorWindow is true, it shows a window with the error message stored in errorMessage variable.
+        void setErrorWindow(bool show, const char* message); //sets the error window to show or not. And takes the message to be shown
         //Getters
         int getBpmInput();
         const char* get_text_input();
