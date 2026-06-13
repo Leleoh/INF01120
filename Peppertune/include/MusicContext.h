@@ -27,6 +27,7 @@ class MusicContext{
     
     // BPM methods para Voice.cpp
     int getBpm() const;
+    void setBpm(int newBpm);
     void increaseBpm(int delta);
     void decreaseBpm(int delta);
 };

@@ -83,6 +83,10 @@ int MusicContext::getBpm() const {
     return bpm;
 }
 
+void MusicContext::setBpm(int newBpm) {
+    bpm = newBpm;
+}
+
 void MusicContext::increaseBpm(int delta) {
     bpm += delta;
 }
