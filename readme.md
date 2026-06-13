@@ -38,11 +38,13 @@ Após abrir o programa, digite sua composição na caixa de texto. O mapeamento 
 * **Repetição:** Consoantes que não estão mapeadas repetem a última nota tocada.
 * **Múltiplos Instrumentos:** Cada quebra de linha (`Enter`) cria um novo instrumento tocando ao mesmo tempo.
 
-*(Exemplo Rápido: Para tocar a linha de baixo do **Frère Jacques**, você pode digitar: )*
-C D E C C D E C E F G E F G
-[4] C D E C C D E C E F G E F G
-[8] C D E C C D E C E F G E F G
-[12] C D E C C D E C E F G E F G
+*(Exemplo: Para tocar o **Frère Jacques** em formato de cânone (várias vozes sobrepostas), você pode digitar as 4 linhas abaixo:)*
+```text
+CDECCDECEFGaEFGa
+[4]CDECCDECEFGaEFGa
+[8]CDECCDECEFGaEFGa
+[12]CDECCDECEFGaEFGa
+```
 
 ---
 
