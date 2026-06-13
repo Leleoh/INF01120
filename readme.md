@@ -38,7 +38,11 @@ Após abrir o programa, digite sua composição na caixa de texto. O mapeamento 
 * **Repetição:** Consoantes que não estão mapeadas repetem a última nota tocada.
 * **Múltiplos Instrumentos:** Cada quebra de linha (`Enter`) cria um novo instrumento tocando ao mesmo tempo.
 
-*(Exemplo Rápido: Para tocar a linha de baixo do **Seven Nation Army**, você pode digitar `EaEaGaEaDaCaaB`)*
+*(Exemplo Rápido: Para tocar a linha de baixo do **Frère Jacques**, você pode digitar: )*
+C D E C C D E C E F G E F G
+[4] C D E C C D E C E F G E F G
+[8] C D E C C D E C E F G E F G
+[12] C D E C C D E C E F G E F G
 
 ---
 
