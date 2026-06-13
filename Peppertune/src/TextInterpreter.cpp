@@ -30,17 +30,22 @@ void TextInterpreter::parseString(const std::string& text){
         MusicContext newVoice(voiceID);
         newVoice.setBpm(globalBPM);
 
-        // Roda a lógica da funcionalidade do colega
         Voice friendVoice(voiceID);
         
-        // Aplica os valores da UI caso tenham sido configurados
+        //aplica os valores da UI como BASE para a primeira voz, e defasa as demais
+        //oitavas
         if (customOctave != -1) {
-            friendVoice.setBaseOctave(customOctave);
-            friendVoice.setCurrentOctave(customOctave);
+            int calcOctave = customOctave - (voiceID % 4);
+            if (calcOctave < 0) calcOctave = 0;
+            friendVoice.setBaseOctave(calcOctave);
+            friendVoice.setCurrentOctave(calcOctave);
         }
+        //mesma coisa para o volume
         if (customVolume != -1) {
-            friendVoice.setBaseVolume(customVolume);
-            friendVoice.setCurrentVolume(customVolume);
+            int calcVolume = customVolume - (voiceID % 4) * 20;
+            if (calcVolume < 0) calcVolume = 0;
+            friendVoice.setBaseVolume(calcVolume);
+            friendVoice.setCurrentVolume(calcVolume);
         }
 
         friendVoice.processLine(currentLine, newVoice);
