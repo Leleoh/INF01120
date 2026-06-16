@@ -34,10 +34,23 @@ find_package(OpenGL REQUIRED)
 # Encontra todos os arquivos .cpp dentro de Peppertune/src
 file(GLOB_RECURSE SOURCES "Peppertune/src/*.cpp")
 
+
+# ---- Dependencies ----
+file(GLOB MIDIFILE_SOURCES
+    "Peppertune/deps/midifile/*.cpp"
+)
+
+set(DEPS
+    Peppertune/deps/tinyfiledialogs.cpp
+)
+
+
 # Cria o executável principal
 add_executable(peppertune
 
     ${SOURCES}
+    ${MIDIFILE_SOURCES}
+    ${DEPS}
 
     # -----------------------------
     # ImGui Core
@@ -60,7 +73,8 @@ target_include_directories(peppertune PRIVATE
     Peppertune/include
     ${imgui_SOURCE_DIR}
     ${imgui_SOURCE_DIR}/backends
-    Peppertune/include/midifile
+    Peppertune/deps/midifile
+    Peppertune/deps
 )
 
 # Define o padrão C++
@@ -81,7 +95,7 @@ target_link_libraries(peppertune PRIVATE
 add_executable(peppertune_tests
     Peppertune/tests/sdl_test.cpp
     Peppertune/src/interface.cpp
-    Peppertune/src/tinyfiledialogs.cpp
+    Peppertune/deps/tinyfiledialogs.cpp
     
 
 
@@ -111,7 +125,8 @@ target_include_directories(peppertune_tests PRIVATE
     Peppertune/include
     ${imgui_SOURCE_DIR}
     ${imgui_SOURCE_DIR}/backends
-    Peppertune/include/midifile
+    Peppertune/deps/midifile
+    Peppertune/deps
 )
 
 
