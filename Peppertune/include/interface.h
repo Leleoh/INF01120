@@ -27,6 +27,7 @@ class interface{
         void cleanup();
         //Spawn de widgets
         bool spawnPlayButton();
+        bool spawnGenerateMidiButton();
         void spawnBpmWidget();
         void spawnTextInput();
         void spawnOctaveWidget();

@@ -30,4 +30,37 @@ namespace Peppertune::Constants{
     inline constexpr int MIN_BPM = 1;
     inline constexpr int TAMANHO_LARGURA = 1280;
     inline constexpr int TAMANHO_ALTURA = 720;
+
+    //constantes de interface
+    inline constexpr int OCTAVE_WIDGET_X = 853;
+    inline constexpr int OCTAVE_WIDGET_Y = 60;
+    inline constexpr int OCTAVE_WIDGET_WIDTH = 160;
+    inline constexpr int VOLUME_WIDGET_X = 1066.67;
+    inline constexpr int VOLUME_WIDGET_Y = 60;
+    inline constexpr int VOLUME_WIDGET_WIDTH = 160;
+    inline constexpr int BPM_WIDGET_X = 660;
+    inline constexpr int BPM_WIDGET_Y = 60;
+    inline constexpr int BPM_WIDGET_WIDTH = 160;
+    inline constexpr int SAVE_BUTTON_X = 800;
+    inline constexpr int SAVE_BUTTON_Y = 600;
+    inline constexpr int LOAD_BUTTON_X = 960;
+    inline constexpr int LOAD_BUTTON_Y = 600;
+    inline constexpr int SAVE_BUTTON_WIDTH = 160;
+    inline constexpr int SAVE_BUTTON_HEIGHT = 60;
+    inline constexpr int LOAD_BUTTON_WIDTH = 160;
+    inline constexpr int LOAD_BUTTON_HEIGHT = 60;
+    inline constexpr int ERROR_MESSAGE_X = 640;
+    inline constexpr int ERROR_MESSAGE_Y = 360;
+    inline constexpr int ERROR_MESSAGE_WIDTH = 500;
+    inline constexpr int ERROR_MESSAGE_HEIGHT = 300;
+    inline constexpr int MUSIC_NAME_INPUT_WIDTH = 640;
+    inline constexpr int MUSIC_NAME_INPUT_HEIGHT = 720;
+    inline constexpr int PLAY_BUTTON_X = 800;
+    inline constexpr int PLAY_BUTTON_Y = 180;
+    inline constexpr int PLAY_BUTTON_WIDTH = 320;
+    inline constexpr int PLAY_BUTTON_HEIGHT = 360;
+    inline constexpr int GENERATE_MIDI_BUTTON_X = 800;
+    inline constexpr int GENERATE_MIDI_BUTTON_Y = 670;
+    inline constexpr int GENERATE_MIDI_BUTTON_WIDTH = 320;
+    inline constexpr int GENERATE_MIDI_BUTTON_HEIGHT = 50;
 }

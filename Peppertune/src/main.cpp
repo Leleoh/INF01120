@@ -26,6 +26,11 @@ int main(){
         ui.spawnLoadButton();
         
         // Verifica se o botão play foi clicado neste frame
+
+        if(ui.spawnGenerateMidiButton()) {
+            std::cout << "[Main] Botao Generate MIDI pressionado!" << std::endl;
+        }
+
         if (ui.spawnPlayButton()) {
             std::cout << "[Main] Botao Play pressionado!" << std::endl;
             

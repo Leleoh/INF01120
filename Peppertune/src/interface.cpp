@@ -106,8 +106,8 @@ void interface::widgets(){
      "Coloque os parâmetros da música aqui",
      music_name,
      128,
-     ImVec2(static_cast<float>(width - width/2), static_cast<float>(height))
- );
+     ImVec2(static_cast<float>(Peppertune::Constants::MUSIC_NAME_INPUT_WIDTH), static_cast<float>(Peppertune::Constants::MUSIC_NAME_INPUT_HEIGHT)))
+ ;
  }
 //get de dados de input de música.
 const char* interface::get_text_input(){
@@ -116,8 +116,8 @@ const char* interface::get_text_input(){
 }
 //Spawna caixa de int para input de BPM.
 void interface::spawnBpmWidget(){
-    ImGui::SetCursorPos(ImVec2(static_cast<float>(width/2 + width/72), static_cast<float>(height/12)));
-    ImGui::SetNextItemWidth(static_cast<float>(width/8));
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(Peppertune::Constants::BPM_WIDGET_X), static_cast<float>(Peppertune::Constants::BPM_WIDGET_Y)));
+    ImGui::SetNextItemWidth(static_cast<float>(Peppertune::Constants::BPM_WIDGET_WIDTH));
     ImGui::InputInt("BPM", &startingBpm);
 
         //Não deixa o usuário colocar um BPM fora dos limites pré-definidos.
@@ -137,18 +137,28 @@ int interface::getBpmInput(){
 //spawna bottão de play
 bool interface::spawnPlayButton(){
 
-    ImGui::SetCursorPos(ImVec2(static_cast<float>(width - 3*width/8), static_cast<float>(height/4)));
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(Peppertune::Constants::PLAY_BUTTON_X), static_cast<float>(Peppertune::Constants::PLAY_BUTTON_Y)));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 999.0f);
-    ImGui::Button("play", ImVec2(static_cast<float>(width/4), static_cast<float>(height/2)));
+    ImGui::Button("play", ImVec2(static_cast<float>(Peppertune::Constants::PLAY_BUTTON_WIDTH), static_cast<float>(Peppertune::Constants::PLAY_BUTTON_HEIGHT)));
     ImGui::PopStyleVar();
+    return ImGui::IsItemClicked();
+}
+
+//spawna bottão de play
+bool interface::spawnGenerateMidiButton(){
+
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(Peppertune::Constants::GENERATE_MIDI_BUTTON_X), static_cast<float>(Peppertune::Constants::GENERATE_MIDI_BUTTON_Y)));
+    //ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 999.0f);
+    ImGui::Button("GENERATE MIDI", ImVec2(static_cast<float>(Peppertune::Constants::GENERATE_MIDI_BUTTON_WIDTH), static_cast<float>(Peppertune::Constants::GENERATE_MIDI_BUTTON_HEIGHT)));
+    //ImGui::PopStyleVar();
     return ImGui::IsItemClicked();
 }
 
 
 //spawna caixa de int para input de oitava.
 void interface::spawnOctaveWidget(){
-    ImGui::SetCursorPos(ImVec2(static_cast<float>(width/2 + width/6), static_cast<float>(height/12)));
-    ImGui::SetNextItemWidth(static_cast<float>(width/8));
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(Peppertune::Constants::OCTAVE_WIDGET_X), static_cast<float>(Peppertune::Constants::OCTAVE_WIDGET_Y)));
+    ImGui::SetNextItemWidth(static_cast<float>(Peppertune::Constants::OCTAVE_WIDGET_WIDTH));
     ImGui::InputInt("OCTAVE", &startingOctave);
 
         //Não deixa o usuário colocar uma oitava fora dos limites pré-definidos.
@@ -168,8 +178,8 @@ int interface::getOctaveInput(){
 
 //spawna caixa de int para input de volume.
 void interface::spawnVolumeWidget(){
-    ImGui::SetCursorPos(ImVec2(static_cast<float>(width/2 + width/3), static_cast<float>(height/12)));
-    ImGui::SetNextItemWidth(static_cast<float>(width/8));
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(Peppertune::Constants::VOLUME_WIDGET_X), static_cast<float>(Peppertune::Constants::VOLUME_WIDGET_Y)));
+    ImGui::SetNextItemWidth(static_cast<float>(Peppertune::Constants::VOLUME_WIDGET_WIDTH));
     ImGui::InputInt("VOLUME", &startingVolume);
 
         //Não deixa o usuário colocar um volume fora dos limites pré-definidos.
@@ -210,18 +220,16 @@ void interface::spawnErrorMessage(){
 
 
 void interface::spawnSaveButton(){
-    ImGui::SetCursorPos(ImVec2(static_cast<float>(width/2 + width/9), static_cast<float>(height/2 + height/3)));
-    ImGui::SetNextItemWidth(static_cast<float>(width/8));
-    ImGui::Button("SAVE", ImVec2(static_cast<float>(width/8), static_cast<float>(height/12)));
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(Peppertune::Constants::SAVE_BUTTON_X), static_cast<float>(Peppertune::Constants::SAVE_BUTTON_Y)));
+    ImGui::Button("SAVE", ImVec2(static_cast<float>(Peppertune::Constants::SAVE_BUTTON_WIDTH), static_cast<float>(Peppertune::Constants::SAVE_BUTTON_HEIGHT)));
     if (ImGui::IsItemClicked()) {
         saveFile();
     }
 }
 
 void interface::spawnLoadButton(){
-    ImGui::SetCursorPos(ImVec2(static_cast<float>(width/2 + width/4), static_cast<float>(height/2 + height/3)));
-    ImGui::SetNextItemWidth(static_cast<float>(width/8));
-    ImGui::Button("LOAD", ImVec2(static_cast<float>(width/8), static_cast<float>(height/12)));
+    ImGui::SetCursorPos(ImVec2(static_cast<float>(Peppertune::Constants::LOAD_BUTTON_X), static_cast<float>(Peppertune::Constants::LOAD_BUTTON_Y)));
+    ImGui::Button("LOAD", ImVec2(static_cast<float>(Peppertune::Constants::LOAD_BUTTON_WIDTH), static_cast<float>(Peppertune::Constants::LOAD_BUTTON_HEIGHT)));
     if (ImGui::IsItemClicked()) {
         loadFile();
     }
