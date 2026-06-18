@@ -43,7 +43,7 @@ namespace Peppertune::Constants{
     inline constexpr int BPM_WIDGET_WIDTH = 160;
     inline constexpr int SAVE_BUTTON_X = 800;
     inline constexpr int SAVE_BUTTON_Y = 600;
-    inline constexpr int LOAD_BUTTON_X = 960;
+    inline constexpr int LOAD_BUTTON_X = 965;
     inline constexpr int LOAD_BUTTON_Y = 600;
     inline constexpr int SAVE_BUTTON_WIDTH = 160;
     inline constexpr int SAVE_BUTTON_HEIGHT = 60;
@@ -56,11 +56,17 @@ namespace Peppertune::Constants{
     inline constexpr int MUSIC_NAME_INPUT_WIDTH = 640;
     inline constexpr int MUSIC_NAME_INPUT_HEIGHT = 720;
     inline constexpr int PLAY_BUTTON_X = 800;
-    inline constexpr int PLAY_BUTTON_Y = 180;
-    inline constexpr int PLAY_BUTTON_WIDTH = 320;
-    inline constexpr int PLAY_BUTTON_HEIGHT = 360;
+    inline constexpr int PLAY_BUTTON_Y = 320;
+    inline constexpr int PLAY_BUTTON_WIDTH = 160;
+    inline constexpr int PLAY_BUTTON_HEIGHT = 50;
     inline constexpr int GENERATE_MIDI_BUTTON_X = 800;
     inline constexpr int GENERATE_MIDI_BUTTON_Y = 670;
-    inline constexpr int GENERATE_MIDI_BUTTON_WIDTH = 320;
+    inline constexpr int GENERATE_MIDI_BUTTON_WIDTH = 325;
     inline constexpr int GENERATE_MIDI_BUTTON_HEIGHT = 50;
+    inline constexpr int PAUSE_BUTTON_X = 965;
+    inline constexpr int PAUSE_BUTTON_Y = 320;
+    inline constexpr int PAUSE_BUTTON_WIDTH = 160;
+    inline constexpr int PAUSE_BUTTON_HEIGHT = 50;
+    inline constexpr float BUTTON_ROUDING = 400.0f;
+
 }
