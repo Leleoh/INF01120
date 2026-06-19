@@ -139,7 +139,7 @@ bool interface::spawnPlayButton(){
 
     ImGui::SetCursorPos(ImVec2(static_cast<float>(Peppertune::Constants::PLAY_BUTTON_X), static_cast<float>(Peppertune::Constants::PLAY_BUTTON_Y)));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, Peppertune::Constants::BUTTON_ROUDING);
-    ImGui::Button("PLAY", ImVec2(static_cast<float>(Peppertune::Constants::PLAY_BUTTON_WIDTH), static_cast<float>(Peppertune::Constants::PLAY_BUTTON_HEIGHT)));
+    bool clicked = ImGui::Button("PLAY", ImVec2(static_cast<float>(Peppertune::Constants::PLAY_BUTTON_WIDTH), static_cast<float>(Peppertune::Constants::PLAY_BUTTON_HEIGHT)));
     ImGui::PopStyleVar();
     return clicked;
 }
