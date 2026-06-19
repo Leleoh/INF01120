@@ -24,8 +24,18 @@ int main(){
         ui.spawnVolumeWidget();
         ui.spawnSaveButton();
         ui.spawnLoadButton();
+        ui.spawnErrorMessage(); // Verifica se showErrorWindow é true e, se for, mostra a janela de erro com a mensagem armazenada em errorMessage
         
         // Verifica se o botão play foi clicado neste frame
+
+        if(ui.spawnGenerateMidiButton()) {
+            ui.setErrorWindow(true, "Funcao de gerar MIDI ainda nao implementada! Use o botao PLAY para gerar e tocar o MIDI a partir do texto digitado.");
+        }
+
+        if(ui.spawnPauseButton()) {
+            ui.setErrorWindow(true, "Funcao de pausar MIDI ainda nao implementada!");
+        }
+
         if (ui.spawnPlayButton()) {
             std::cout << "[Main] Botao Play pressionado!" << std::endl;
             
