@@ -5,35 +5,50 @@
 #include <fstream>
 #include <iostream>
 #include "Constants.h"
+#include <sstream>
 
 TextInterpreter::TextInterpreter(){
     globalBPM = Peppertune::Constants::DEFAULT_BPM; //Garante que começa com 120
+    customOctave = -1;
+    customVolume = -1;
 }
 
-void TextInterpreter::parseFile(const std::string& filepath){
-    
-    //Tenta abrir o arquiv .txt
-    std::ifstream file(filepath);
+void TextInterpreter::setInitialBPM(int bpm) { globalBPM = bpm; }
+void TextInterpreter::setInitialOctave(int octave) { customOctave = octave; }
+void TextInterpreter::setInitialVolume(int vol) { customVolume = vol; }
 
-    //Erro de abertura
-    if (!file.is_open()){
-        std::cerr << "Erro: Não foi possível abrir o arquivo " << filepath << std::endl;
-        return;
-    }
 
+void TextInterpreter::parseString(const std::string& text){
+    std::istringstream stream(text);
     std::string currentLine;
     int voiceID = 0;
 
     //Analisa o texto até achar um \n, vai jogando dentro do currentLine
-    while (std::getline(file, currentLine)){
+    while (std::getline(stream, currentLine)){
 
         //Instancia uma nova voz
         MusicContext newVoice(voiceID);
+        newVoice.setBpm(globalBPM);
 
-        // Roda a lógica da funcionalidade do colega
         Voice friendVoice(voiceID);
-        friendVoice.processLine(currentLine, newVoice);
+        
+        //aplica os valores da UI como BASE para a primeira voz, e defasa as demais
+        //oitavas
+        if (customOctave != -1) {
+            int calcOctave = customOctave - (voiceID % 4);
+            if (calcOctave < 0) calcOctave = 0;
+            friendVoice.setBaseOctave(calcOctave);
+            friendVoice.setCurrentOctave(calcOctave);
+        }
+        //mesma coisa para o volume
+        if (customVolume != -1) {
+            int calcVolume = customVolume - (voiceID % 4) * 20;
+            if (calcVolume < 0) calcVolume = 0;
+            friendVoice.setBaseVolume(calcVolume);
+            friendVoice.setCurrentVolume(calcVolume);
+        }
 
+        friendVoice.processLine(currentLine, newVoice);
         //Chama o tradutor para aplicar a função definida do mapeamento
         for (char letter: currentLine){
             MusicTranslator::applyMapping(letter, newVoice, globalBPM);
@@ -44,8 +59,6 @@ void TextInterpreter::parseFile(const std::string& filepath){
 
         voiceID++;
     }
-
-    file.close();
 }
 
 int TextInterpreter::getGlobalBPM() const{

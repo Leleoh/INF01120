@@ -123,14 +123,11 @@ void testTrocaDeInstrumento() {
     assert(events[2].instrument == 22);
 }
 
-#include <fstream>
 void testDuasLinhasDuasVozes() {
-    std::ofstream out("test_temp.txt");
-    out << "CDE\nGAB\n";
-    out.close();
+    std::string text = "CDE\nGAB\n";
 
     TextInterpreter interpreter;
-    interpreter.parseFile("test_temp.txt");
+    interpreter.parseString(text);
 
     const auto& voices = interpreter.getVoices();
 

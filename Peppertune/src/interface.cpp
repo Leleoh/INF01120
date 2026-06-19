@@ -141,7 +141,7 @@ bool interface::spawnPlayButton(){
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, Peppertune::Constants::BUTTON_ROUDING);
     ImGui::Button("PLAY", ImVec2(static_cast<float>(Peppertune::Constants::PLAY_BUTTON_WIDTH), static_cast<float>(Peppertune::Constants::PLAY_BUTTON_HEIGHT)));
     ImGui::PopStyleVar();
-    return ImGui::IsItemClicked();
+    return clicked;
 }
 
 //spawna bottão de gearar MIDI
