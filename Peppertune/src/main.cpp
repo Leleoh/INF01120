@@ -23,7 +23,7 @@ int main(){
         ui.spawnOctaveWidget();
         ui.spawnVolumeWidget();
         ui.spawnSaveButton();
-        ui.SpawnLoadButton();
+        ui.spawnLoadButton();
         
         // Verifica se o botão play foi clicado neste frame
         if (ui.spawnPlayButton()) {

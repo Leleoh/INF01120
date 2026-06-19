@@ -26,8 +26,9 @@ int main(int, char**)
         ui.spawnBpmWidget();
         ui.spawnOctaveWidget();
         ui.spawnVolumeWidget();
-        ui.SpawnLoadButton();
+        ui.spawnLoadButton();
         ui.spawnSaveButton();
+        ui.spawnErrorMessage();
         if (ui.spawnPlayButton())
         {
             // Handle play button click
@@ -41,7 +42,7 @@ int main(int, char**)
         ui.end();
     }
 
-ui.cleanup();
+    ui.cleanup();
 
     return 0;
 }
