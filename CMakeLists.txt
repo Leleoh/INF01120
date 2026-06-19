@@ -92,11 +92,18 @@ target_link_libraries(peppertune PRIVATE
 # ---------------------------------------------------------
 # Executável de testes
 # ---------------------------------------------------------
+file(GLOB_RECURSE MIDIFILE_TEST_SOURCES "Peppertune/deps/midifile/*.cpp")
+
 add_executable(peppertune_tests
     Peppertune/tests/sdl_test.cpp
     Peppertune/src/interface.cpp
     Peppertune/deps/tinyfiledialogs.cpp
-    
+    Peppertune/src/TextInterpreter.cpp
+    Peppertune/src/MusicContext.cpp
+    Peppertune/src/Voice.cpp
+    Peppertune/src/MidiGenerator.cpp
+    Peppertune/src/MusicTranslator.cpp
+    ${MIDIFILE_TEST_SOURCES}
 
 
 

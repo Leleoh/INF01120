@@ -6,12 +6,14 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "interface.h"
 #include <stdio.h>
+#include "TextInterpreter.h"
 #include "Constants.h"
 
 int main(int, char**)
 {
 
     interface ui;
+    TextInterpreter interpreter;
     ui.begin();
 
     bool running = true;
@@ -29,17 +31,18 @@ int main(int, char**)
         ui.spawnErrorMessage();
         if (ui.spawnPlayButton())
         {
-            // Aqui você pode adicionar a lógica para iniciar a reprodução da música usando os dados de entrada do usuário.
-            ui.setErrorWindow(true,"teste de erro");
-            
+            // Handle play button click
+            interpreter.parseString(ui.get_text_input());
+            auto voices = interpreter.getVoices();
+            for (int i = 0; i < voices.size(); i++) {
+                printf("Voice %d processed (ID: %d)\n", i, voices[i].getVoiceID());
             }
-        
-
-        ui.end();
-        
         }
 
-        ui.cleanup();
+        ui.end();
+    }
+
+    ui.cleanup();
 
     return 0;
 }

@@ -32,23 +32,15 @@ int main(){
             // Passo A: Pegar o texto digitado na interface
             const char* textoInput = ui.get_text_input();
             
-            // Passo B: Salvar em um arquivo temporario (A solução MVP para o parser)
-            std::ofstream tempFile("temp_input.txt");
-            if (tempFile.is_open()) {
-                tempFile << textoInput;
-                tempFile.close();
-            } else {
-                std::cerr << "Erro ao criar arquivo temporario." << std::endl;
-            }
-            
-            // Passo C: Instanciar um maestro NOVO para evitar que as notas da vez passada se acumulem
+            // Passo B: O maestro agora lê a string diretamente da interface
             TextInterpreter maestro;
             
-            // (Futuro) Aqui você passaria os valores dos inputs para o maestro:
-            // maestro.setInitialBPM(ui.getBpmInput());
+            // Passando as configurações da interface para o backend!
+            maestro.setInitialBPM(ui.getBpmInput());
+            maestro.setInitialOctave(ui.getOctaveInput());
+            maestro.setInitialVolume(ui.getVolumeInput());
             
-            // Passo D: O maestro lê o arquivo que acabamos de salvar
-            maestro.parseFile("temp_input.txt");
+            maestro.parseString(textoInput);
             
             // Passo E: Gerar MIDI e tocar
             MidiGenerator midi;

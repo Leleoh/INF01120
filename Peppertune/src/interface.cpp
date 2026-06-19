@@ -139,9 +139,9 @@ bool interface::spawnPlayButton(){
 
     ImGui::SetCursorPos(ImVec2(static_cast<float>(width - 3*width/8), static_cast<float>(height/4)));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 999.0f);
-    ImGui::Button("play", ImVec2(static_cast<float>(width/4), static_cast<float>(height/2)));
+    bool clicked = ImGui::Button("play", ImVec2(static_cast<float>(width/4), static_cast<float>(height/2)));
     ImGui::PopStyleVar();
-    return ImGui::IsItemClicked();
+    return clicked;
 }
 
 
