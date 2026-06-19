@@ -6,14 +6,14 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "interface.h"
 #include <stdio.h>
-#include "Textparser.h"
+#include "TextInterpreter.h"
 #include "Constants.h"
 
 int main(int, char**)
 {
 
     interface ui;
-    TextParser parser;
+    TextInterpreter interpreter;
     ui.begin();
 
     bool running = true;
@@ -31,9 +31,10 @@ int main(int, char**)
         if (ui.spawnPlayButton())
         {
             // Handle play button click
-            parser.Parse(ui.get_text_input());
-            for (int i = 0; i < Peppertune::Constants::MAX_VOICES; i++) {
-                printf("Voice %d: %s\n", i, parser.GetVoice(i).c_str());
+            interpreter.parseString(ui.get_text_input());
+            auto voices = interpreter.getVoices();
+            for (int i = 0; i < voices.size(); i++) {
+                printf("Voice %d processed (ID: %d)\n", i, voices[i].getVoiceID());
             }
         }
 
