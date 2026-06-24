@@ -98,7 +98,7 @@ void MidiGenerator::saveToFile(const std::vector<std::vector<VoiceEvent>>& voice
     std::cout << "[MidiGenerator] Arquivo MIDI gerado com sucesso: " << filename << '\n';
 }
 
-void MidiGenerator::generateAndPlay(const std::vector<std::vector<VoiceEvent>>& voiceEvents) {
+void MidiGenerator::generateAndPlay(const std::vector<std::vector<VoiceEvent>>& voiceEvents, std::atomic<bool>* isPaused) {
     if (voiceEvents.empty()) {
         std::cout << "[MidiGenerator] Nenhuma voz recebida. Abortando audio.\n";
         return;
@@ -160,6 +160,14 @@ void MidiGenerator::generateAndPlay(const std::vector<std::vector<VoiceEvent>>& 
     int tailFrames = spec.freq * 2; // 2 segundos de release
 
     while (true) {
+        if (isPaused && isPaused->load()) {
+            SDL_PauseAudioStreamDevice(stream);
+            while (isPaused->load()) {
+                SDL_Delay(50);
+            }
+            SDL_ResumeAudioStreamDevice(stream);
+        }
+
         if (SDL_GetAudioStreamAvailable(stream) < (int)(spec.freq * sizeof(float) * 2 / 2)) {
             // Processa as mensagens MIDI do tempo atual
             while (midi && midi->time <= msec) {
