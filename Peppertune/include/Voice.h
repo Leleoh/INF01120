@@ -48,25 +48,11 @@ private:
     std::vector<VoiceEvent> generatedEvents;
 
     void configureDefaultsFromVoiceId();
+public:
+    void addEvent(const VoiceEvent& event);
     std::string parseInitialDelay(const std::string& line);
-    void processChar(char c, MusicContext& ctx);
-
-    bool isNoteChar(char c) const;
-    bool isPauseChar(char c) const;
-    bool isUnmappedVowel(char c) const;
-
-    void handleNote(char c);
-    void handlePause(char c);
-    void handleInstrumentChange(char c);
-    void handleOctaveChange(char c);
-    void handleVolumeChange(char c);
-    void handleBpmChange(MusicContext& ctx, int delta);
-    void handleRepeatOrPause(char c);
     void createInitialSilenceEvents();
 
-    void addEvent(const VoiceEvent& event);
-
-public:
     Voice(int id = 0);
 
     int getVoiceId() const;

@@ -49,10 +49,6 @@ void TextInterpreter::parseString(const std::string& text){
         }
 
         friendVoice.processLine(currentLine, newVoice);
-        //Chama o tradutor para aplicar a função definida do mapeamento
-        for (char letter: currentLine){
-            MusicTranslator::applyMapping(letter, newVoice, globalBPM);
-        }
 
         allVoiceEvents.push_back(friendVoice.getEvents());
         voices.push_back(newVoice);

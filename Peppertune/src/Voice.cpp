@@ -2,6 +2,7 @@
 // Arquivo de lógica para as vozes
 #include "Voice.h"
 #include "MusicContext.h"
+#include "MusicTranslator.h"
 
 #include <algorithm>
 #include <cctype>
@@ -10,20 +11,6 @@
 namespace {
 int clampInt(int value, int minValue, int maxValue) {
     return std::max(minValue, std::min(value, maxValue));
-}
-
-std::string noteToPitch(char noteChar, int octave) {
-    switch (noteChar) {
-        case 'A': return "A" + std::to_string(octave);
-        case 'B': return "B" + std::to_string(octave);
-        case 'C': return "C" + std::to_string(octave);
-        case 'D': return "D" + std::to_string(octave);
-        case 'E': return "E" + std::to_string(octave);
-        case 'F': return "F" + std::to_string(octave);
-        case 'G': return "G" + std::to_string(octave);
-        case 'H': return "Bb" + std::to_string(octave);
-        default:  return "REST";
-    }
 }
 }
 
@@ -173,177 +160,7 @@ std::string Voice::parseInitialDelay(const std::string& line) {
     return line.substr(contentStart);
 }
 
-bool Voice::isNoteChar(char c) const {
-    return c >= 'A' && c <= 'H';
-}
 
-bool Voice::isPauseChar(char c) const {
-    return c >= 'a' && c <= 'h';
-}
-
-bool Voice::isUnmappedVowel(char c) const {
-    return c == 'O' || c == 'o' ||
-           c == 'I' || c == 'i' ||
-           c == 'U' || c == 'u';
-}
-
-void Voice::handleNote(char c) {
-    setLastNote(c);
-
-    addEvent({
-        VoiceEventType::Note,
-        voiceId,
-        currentBeat,
-        c,
-        noteToPitch(c, currentOctave),
-        1,
-        currentVolume,
-        currentInstrument,
-        -1,
-        currentOctave
-    });
-
-    ++currentBeat;
-}
-
-void Voice::handlePause(char c) {
-    addEvent({
-        VoiceEventType::Rest,
-        voiceId,
-        currentBeat,
-        c,
-        "",
-        1,
-        currentVolume,
-        currentInstrument,
-        -1,
-        currentOctave
-    });
-
-    ++currentBeat;
-}
-
-void Voice::handleInstrumentChange(char c) {
-    if (c == '!') {
-        setCurrentInstrument(22);
-    } else if (c == ';') {
-        setCurrentInstrument(15);
-    } else if (c == ',') {
-        setCurrentInstrument(20);
-    } else if (isUnmappedVowel(c)) {
-        setCurrentInstrument(110);
-    }
-
-    addEvent({
-        VoiceEventType::InstrumentChange,
-        voiceId,
-        currentBeat,
-        c,
-        "",
-        0,
-        currentVolume,
-        currentInstrument,
-        -1,
-        currentOctave
-    });
-}
-
-void Voice::handleOctaveChange(char c) {
-    if (c == '?' || c == '.') {
-        if (currentOctave < 9) {
-            setCurrentOctave(currentOctave + 1);
-        } else {
-            setCurrentOctave(baseOctave);
-        }
-    } else if (c == 'V') {
-        setCurrentOctave(currentOctave - 1);
-    }
-
-    addEvent({
-        VoiceEventType::OctaveChange,
-        voiceId,
-        currentBeat,
-        c,
-        "",
-        0,
-        currentVolume,
-        currentInstrument,
-        -1,
-        currentOctave
-    });
-}
-
-void Voice::handleVolumeChange(char c) {
-    if (c == ' ') {
-        setCurrentVolume(std::min(currentVolume * 2, 127));
-
-        addEvent({
-            VoiceEventType::VolumeChange,
-            voiceId,
-            currentBeat,
-            c,
-            "",
-            0,
-            currentVolume,
-            currentInstrument,
-            -1,
-            currentOctave
-        });
-    }
-}
-
-void Voice::handleBpmChange(MusicContext& ctx, int delta) {
-    if (delta > 0) {
-        ctx.increaseBpm(delta);
-    } else {
-        ctx.decreaseBpm(-delta);
-    }
-
-    addEvent({
-        VoiceEventType::BpmChange,
-        voiceId,
-        currentBeat,
-        '\0',
-        "",
-        0,
-        currentVolume,
-        currentInstrument,
-        ctx.getBpm(),
-        currentOctave
-    });
-}
-
-void Voice::handleRepeatOrPause(char c) {
-    if (lastNote != '\0') {
-        addEvent({
-            VoiceEventType::RepeatLastNote,
-            voiceId,
-            currentBeat,
-            c,
-            noteToPitch(lastNote, currentOctave),
-            1,
-            currentVolume,
-            currentInstrument,
-            -1,
-            currentOctave
-        });
-    } else {
-        addEvent({
-            VoiceEventType::Rest,
-            voiceId,
-            currentBeat,
-            c,
-            "",
-            1,
-            currentVolume,
-            currentInstrument,
-            -1,
-            currentOctave
-        });
-    }
-
-    ++currentBeat;
-}
 
 void Voice::createInitialSilenceEvents() {
     for (int i = 0; i < delayBeats; ++i) {
@@ -364,47 +181,6 @@ void Voice::createInitialSilenceEvents() {
     }
 }
 
-void Voice::processChar(char c, MusicContext& ctx) {
-    if (isNoteChar(c)) {
-        handleNote(c);
-        return;
-    }
-
-    if (isPauseChar(c)) {
-        handlePause(c);
-        return;
-    }
-
-    if (c == '!' || c == ';' || c == ',' || isUnmappedVowel(c)) {
-        handleInstrumentChange(c);
-        return;
-    }
-
-    if (c == '?' || c == 'V' || c == '.') {
-        handleOctaveChange(c);
-        return;
-    }
-
-    if (c == ' ') {
-        handleVolumeChange(c);
-        return;
-    }
-
-    if (c == '>') {
-        handleBpmChange(ctx, 10);
-        return;
-    }
-
-    if (c == '<') {
-        handleBpmChange(ctx, -10);
-        return;
-    }
-
-    if (!std::isspace(static_cast<unsigned char>(c))) {
-        handleRepeatOrPause(c);
-    }
-}
-
 void Voice::processLine(const std::string& line, MusicContext& ctx) {
     setRawLine(line);
     clearEvents();
@@ -418,7 +194,7 @@ void Voice::processLine(const std::string& line, MusicContext& ctx) {
     createInitialSilenceEvents();
 
     for (char c : content) {
-        processChar(c, ctx);
+        MusicTranslator::translateChar(c, *this, ctx);
     }
 
     std::cout << "[Voice " << voiceId << "] Processando linha: " << rawLine
