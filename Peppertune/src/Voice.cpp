@@ -8,11 +8,7 @@
 #include <cctype>
 #include <iostream>
 
-namespace {
-int clampInt(int value, int minValue, int maxValue) {
-    return std::max(minValue, std::min(value, maxValue));
-}
-}
+
 
 std::string VoiceEvent::toString() const {
     std::string typeName;
@@ -75,7 +71,7 @@ Voice::Voice(int id)
       currentInstrument(0),
       currentBeat(0),
       lastNote('\0') {
-    configureDefaultsFromVoiceId();
+    
 }
 
 int Voice::getVoiceId() const { return voiceId; }
@@ -93,12 +89,12 @@ const std::vector<VoiceEvent>& Voice::getEvents() const { return generatedEvents
 
 void Voice::setRawLine(const std::string& line) { rawLine = line; }
 void Voice::setDelayBeats(int delay) { delayBeats = (delay >= 0) ? delay : 0; }
-void Voice::setBaseOctave(int octave) { baseOctave = clampInt(octave, 0, 9); }
-void Voice::setCurrentOctave(int octave) { currentOctave = clampInt(octave, 0, 9); }
-void Voice::setBaseVolume(int volume) { baseVolume = clampInt(volume, 0, 127); }
-void Voice::setCurrentVolume(int volume) { currentVolume = clampInt(volume, 0, 127); }
-void Voice::setBaseInstrument(int instrument) { baseInstrument = clampInt(instrument, 0, 127); }
-void Voice::setCurrentInstrument(int instrument) { currentInstrument = clampInt(instrument, 0, 127); }
+void Voice::setBaseOctave(int octave) { baseOctave = octave; }
+void Voice::setCurrentOctave(int octave) { currentOctave = octave; }
+void Voice::setBaseVolume(int volume) { baseVolume = volume; }
+void Voice::setCurrentVolume(int volume) { currentVolume = volume; }
+void Voice::setBaseInstrument(int instrument) { baseInstrument = instrument; }
+void Voice::setCurrentInstrument(int instrument) { currentInstrument = instrument; }
 void Voice::setCurrentBeat(int beat) { currentBeat = (beat >= 0) ? beat : 0; }
 void Voice::setLastNote(char note) { lastNote = note; }
 
@@ -110,26 +106,7 @@ void Voice::clearEvents() {
     generatedEvents.clear();
 }
 
-void Voice::configureDefaultsFromVoiceId() {
-    static const int octaveCycle[] = {6, 5, 4, 3};
-    static const int volumeCycle[] = {100, 80, 60, 40};
-    static const int instrumentCycle[] = {6, 20, 0, 70};
 
-    const int index = ((voiceId % 4) + 4) % 4;
-
-    setBaseOctave(octaveCycle[index]);
-    setCurrentOctave(baseOctave);
-
-    setBaseVolume(volumeCycle[index]);
-    setCurrentVolume(baseVolume);
-
-    setBaseInstrument(instrumentCycle[index]);
-    setCurrentInstrument(baseInstrument);
-
-    setCurrentBeat(0);
-    delayBeats = 0;
-    lastNote = '\0';
-}
 
 std::string Voice::parseInitialDelay(const std::string& line) {
     delayBeats = 0;

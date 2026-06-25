@@ -2,7 +2,6 @@
 #include <fstream>
 #include <thread>
 #include <atomic>
-#include "MusicContext.h"
 #include "MusicTranslator.h"
 #include "TextInterpreter.h"
 #include "MidiGenerator.h"

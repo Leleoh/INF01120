@@ -47,7 +47,6 @@ private:
     char lastNote;
     std::vector<VoiceEvent> generatedEvents;
 
-    void configureDefaultsFromVoiceId();
 public:
     void addEvent(const VoiceEvent& event);
     std::string parseInitialDelay(const std::string& line);
