@@ -8,7 +8,7 @@
 #include <sstream>
 
 TextInterpreter::TextInterpreter(){
-    globalBPM = Peppertune::Constants::DEFAULT_BPM; //Garante que começa com 120
+
     customOctave = -1;
     customVolume = -1;
 }
@@ -49,10 +49,6 @@ void TextInterpreter::parseString(const std::string& text){
         }
 
         friendVoice.processLine(currentLine, newVoice);
-        //Chama o tradutor para aplicar a função definida do mapeamento
-        for (char letter: currentLine){
-            MusicTranslator::applyMapping(letter, newVoice, globalBPM);
-        }
 
         allVoiceEvents.push_back(friendVoice.getEvents());
         voices.push_back(newVoice);
