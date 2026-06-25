@@ -7,24 +7,15 @@ MusicContext::MusicContext(int id){
     voiceID = id;
     bpm = 120; // Default BPM
     
-    // Restaurando a "Banda Automática" que foi pensada originalmente
     int ciclo = id % 4;
     if (ciclo == 0){
-        baseOctave = 6;
-        volume = 100;
-        currentInstrument = 6;  //Cravo
+        // currentInstrument = 6;  //Cravo
     } else if(ciclo == 1){
-        baseOctave = 5;
-        volume = 80;
-        currentInstrument = 20; //Órgão
+        // currentInstrument = 20; //Órgão
     } else if(ciclo == 2){
-        baseOctave = 4;
-        volume = 60;
-        currentInstrument = 0;  //Piano
+        // currentInstrument = 0;  //Piano
     } else if(ciclo == 3){
-        baseOctave = 3;
-        volume = 40;
-        currentInstrument = 70;  //Fagote
+        // currentInstrument = 70;  //Fagote
     }
     currentOctave = baseOctave;
 }
@@ -32,7 +23,7 @@ MusicContext::MusicContext(int id){
 //Controle de oitavas
 void MusicContext::raiseOctave(){
     if (currentOctave < 9){
-        currentOctave++; //Incrementa até 9
+        currentOctave++;
     } else {
         currentOctave = baseOctave;
     }
@@ -93,7 +84,6 @@ int MusicContext::getCurrentOctave() const {
 int MusicContext::getCurrentInstrument() const {
     return currentInstrument;
 }
-
 
 // BPM
 int MusicContext::getBpm() const {
