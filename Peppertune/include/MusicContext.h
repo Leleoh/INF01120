@@ -5,9 +5,6 @@
 class MusicContext{
     private:
     int voiceID;
-    int volume;
-    int currentOctave;
-    int currentInstrument;
     int bpm; // Added to satisfy Voice.cpp
 
     public:
