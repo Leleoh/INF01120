@@ -8,7 +8,7 @@
 #include <sstream>
 
 TextInterpreter::TextInterpreter(){
-    globalBPM = Peppertune::Constants::DEFAULT_BPM; //Garante que começa com 120
+
     customOctave = -1;
     customVolume = -1;
 }
