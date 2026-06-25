@@ -5,16 +5,32 @@
 class MusicContext{
     private:
     int voiceID;
+    int volume;
+    int baseOctave;
+    int currentOctave;
+    int currentInstrument;
     int bpm; // Added to satisfy Voice.cpp
 
     public:
     MusicContext(int id); //Exige id para saber quando surgir
 
     //Ações
+    void setInstrument(int newInstrument);
+    void raiseOctave();
+    void doubleVolume();
+    void lowerOctave();
+
+    //Setters para a UI (TextInterpreter)
+    void setVolume(int newVolume);
+    void setBaseOctave(int newOctave);
+    void setCurrentOctave(int newOctave);
 
     //Ler o estado
     int getVoiceID() const;
-
+    int getVolume() const;
+    int getBaseOctave() const;
+    int getCurrentOctave() const;
+    int getCurrentInstrument() const;
     
     // BPM methods para Voice.cpp
     int getBpm() const;

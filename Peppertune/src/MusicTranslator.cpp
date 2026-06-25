@@ -31,7 +31,7 @@ bool MusicTranslator::isUnmappedVowel(char c) {
            c == 'U' || c == 'u';
 }
 
-void MusicTranslator::handleNote(char c, Voice& voice) {
+void MusicTranslator::handleNote(char c, Voice& voice, MusicContext& ctx) {
     voice.setLastNote(c);
 
     voice.addEvent({
@@ -39,18 +39,18 @@ void MusicTranslator::handleNote(char c, Voice& voice) {
         voice.getVoiceId(),
         voice.getCurrentBeat(),
         c,
-        noteToPitch(c, voice.getCurrentOctave()),
+        noteToPitch(c, ctx.getCurrentOctave()),
         1,
-        voice.getCurrentVolume(),
-        voice.getCurrentInstrument(),
+        ctx.getVolume(),
+        ctx.getCurrentInstrument(),
         -1,
-        voice.getCurrentOctave()
+        ctx.getCurrentOctave()
     });
 
     voice.setCurrentBeat(voice.getCurrentBeat() + 1);
 }
 
-void MusicTranslator::handlePause(char c, Voice& voice) {
+void MusicTranslator::handlePause(char c, Voice& voice, MusicContext& ctx) {
     voice.addEvent({
         VoiceEventType::Rest,
         voice.getVoiceId(),
@@ -58,24 +58,24 @@ void MusicTranslator::handlePause(char c, Voice& voice) {
         c,
         "",
         1,
-        voice.getCurrentVolume(),
-        voice.getCurrentInstrument(),
+        ctx.getVolume(),
+        ctx.getCurrentInstrument(),
         -1,
-        voice.getCurrentOctave()
+        ctx.getCurrentOctave()
     });
 
     voice.setCurrentBeat(voice.getCurrentBeat() + 1);
 }
 
-void MusicTranslator::handleInstrumentChange(char c, Voice& voice) {
+void MusicTranslator::handleInstrumentChange(char c, Voice& voice, MusicContext& ctx) {
     if (c == '!') {
-        voice.setCurrentInstrument(22);
+        ctx.setInstrument(22);
     } else if (c == ';') {
-        voice.setCurrentInstrument(15);
+        ctx.setInstrument(15);
     } else if (c == ',') {
-        voice.setCurrentInstrument(20);
+        ctx.setInstrument(20);
     } else if (isUnmappedVowel(c)) {
-        voice.setCurrentInstrument(110);
+        ctx.setInstrument(110);
     }
 
     voice.addEvent({
@@ -85,22 +85,18 @@ void MusicTranslator::handleInstrumentChange(char c, Voice& voice) {
         c,
         "",
         0,
-        voice.getCurrentVolume(),
-        voice.getCurrentInstrument(),
+        ctx.getVolume(),
+        ctx.getCurrentInstrument(),
         -1,
-        voice.getCurrentOctave()
+        ctx.getCurrentOctave()
     });
 }
 
-void MusicTranslator::handleOctaveChange(char c, Voice& voice) {
+void MusicTranslator::handleOctaveChange(char c, Voice& voice, MusicContext& ctx) {
     if (c == '?' || c == '.') {
-        if (voice.getCurrentOctave() < 9) {
-            voice.setCurrentOctave(voice.getCurrentOctave() + 1);
-        } else {
-            voice.setCurrentOctave(voice.getBaseOctave());
-        }
+        ctx.raiseOctave();
     } else if (c == 'V') {
-        voice.setCurrentOctave(voice.getCurrentOctave() - 1);
+        ctx.lowerOctave();
     }
 
     voice.addEvent({
@@ -110,16 +106,16 @@ void MusicTranslator::handleOctaveChange(char c, Voice& voice) {
         c,
         "",
         0,
-        voice.getCurrentVolume(),
-        voice.getCurrentInstrument(),
+        ctx.getVolume(),
+        ctx.getCurrentInstrument(),
         -1,
-        voice.getCurrentOctave()
+        ctx.getCurrentOctave()
     });
 }
 
-void MusicTranslator::handleVolumeChange(char c, Voice& voice) {
+void MusicTranslator::handleVolumeChange(char c, Voice& voice, MusicContext& ctx) {
     if (c == ' ') {
-        voice.setCurrentVolume(std::min(voice.getCurrentVolume() * 2, 127));
+        ctx.doubleVolume();
 
         voice.addEvent({
             VoiceEventType::VolumeChange,
@@ -128,10 +124,10 @@ void MusicTranslator::handleVolumeChange(char c, Voice& voice) {
             c,
             "",
             0,
-            voice.getCurrentVolume(),
-            voice.getCurrentInstrument(),
+            ctx.getVolume(),
+            ctx.getCurrentInstrument(),
             -1,
-            voice.getCurrentOctave()
+            ctx.getCurrentOctave()
         });
     }
 }
@@ -150,26 +146,26 @@ void MusicTranslator::handleBpmChange(int delta, Voice& voice, MusicContext& ctx
         '\0',
         "",
         0,
-        voice.getCurrentVolume(),
-        voice.getCurrentInstrument(),
+        ctx.getVolume(),
+        ctx.getCurrentInstrument(),
         ctx.getBpm(),
-        voice.getCurrentOctave()
+        ctx.getCurrentOctave()
     });
 }
 
-void MusicTranslator::handleRepeatOrPause(char c, Voice& voice) {
+void MusicTranslator::handleRepeatOrPause(char c, Voice& voice, MusicContext& ctx) {
     if (voice.getLastNote() != '\0') {
         voice.addEvent({
             VoiceEventType::RepeatLastNote,
             voice.getVoiceId(),
             voice.getCurrentBeat(),
             c,
-            noteToPitch(voice.getLastNote(), voice.getCurrentOctave()),
+            noteToPitch(voice.getLastNote(), ctx.getCurrentOctave()),
             1,
-            voice.getCurrentVolume(),
-            voice.getCurrentInstrument(),
+            ctx.getVolume(),
+            ctx.getCurrentInstrument(),
             -1,
-            voice.getCurrentOctave()
+            ctx.getCurrentOctave()
         });
     } else {
         voice.addEvent({
@@ -179,10 +175,10 @@ void MusicTranslator::handleRepeatOrPause(char c, Voice& voice) {
             c,
             "",
             1,
-            voice.getCurrentVolume(),
-            voice.getCurrentInstrument(),
+            ctx.getVolume(),
+            ctx.getCurrentInstrument(),
             -1,
-            voice.getCurrentOctave()
+            ctx.getCurrentOctave()
         });
     }
 
@@ -191,27 +187,27 @@ void MusicTranslator::handleRepeatOrPause(char c, Voice& voice) {
 
 void MusicTranslator::translateChar(char c, Voice& voice, MusicContext& ctx) {
     if (isNoteChar(c)) {
-        handleNote(c, voice);
+        handleNote(c, voice, ctx);
         return;
     }
 
     if (isPauseChar(c)) {
-        handlePause(c, voice);
+        handlePause(c, voice, ctx);
         return;
     }
 
     if (c == '!' || c == ';' || c == ',' || isUnmappedVowel(c)) {
-        handleInstrumentChange(c, voice);
+        handleInstrumentChange(c, voice, ctx);
         return;
     }
 
     if (c == '?' || c == 'V' || c == '.') {
-        handleOctaveChange(c, voice);
+        handleOctaveChange(c, voice, ctx);
         return;
     }
 
     if (c == ' ') {
-        handleVolumeChange(c, voice);
+        handleVolumeChange(c, voice, ctx);
         return;
     }
 
@@ -226,6 +222,6 @@ void MusicTranslator::translateChar(char c, Voice& voice, MusicContext& ctx) {
     }
 
     if (!std::isspace(static_cast<unsigned char>(c))) {
-        handleRepeatOrPause(c, voice);
+        handleRepeatOrPause(c, voice, ctx);
     }
 }

@@ -14,13 +14,13 @@ private:
     static bool isPauseChar(char c);
     static bool isUnmappedVowel(char c);
 
-    static void handleNote(char c, Voice& voice);
-    static void handlePause(char c, Voice& voice);
-    static void handleInstrumentChange(char c, Voice& voice);
-    static void handleOctaveChange(char c, Voice& voice);
-    static void handleVolumeChange(char c, Voice& voice);
+    static void handleNote(char c, Voice& voice, MusicContext& ctx);
+    static void handlePause(char c, Voice& voice, MusicContext& ctx);
+    static void handleInstrumentChange(char c, Voice& voice, MusicContext& ctx);
+    static void handleOctaveChange(char c, Voice& voice, MusicContext& ctx);
+    static void handleVolumeChange(char c, Voice& voice, MusicContext& ctx);
     static void handleBpmChange(int delta, Voice& voice, MusicContext& ctx);
-    static void handleRepeatOrPause(char c, Voice& voice);
+    static void handleRepeatOrPause(char c, Voice& voice, MusicContext& ctx);
 };
 
 #endif

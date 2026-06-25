@@ -8,8 +8,6 @@
 #include <cctype>
 #include <iostream>
 
-
-
 std::string VoiceEvent::toString() const {
     std::string typeName;
 
@@ -63,12 +61,6 @@ Voice::Voice(int id)
     : voiceId(id),
       rawLine(""),
       delayBeats(0),
-      baseOctave(5),
-      currentOctave(5),
-      baseVolume(80),
-      currentVolume(80),
-      baseInstrument(0),
-      currentInstrument(0),
       currentBeat(0),
       lastNote('\0') {
     
@@ -77,24 +69,12 @@ Voice::Voice(int id)
 int Voice::getVoiceId() const { return voiceId; }
 const std::string& Voice::getRawLine() const { return rawLine; }
 int Voice::getDelayBeats() const { return delayBeats; }
-int Voice::getBaseOctave() const { return baseOctave; }
-int Voice::getCurrentOctave() const { return currentOctave; }
-int Voice::getBaseVolume() const { return baseVolume; }
-int Voice::getCurrentVolume() const { return currentVolume; }
-int Voice::getBaseInstrument() const { return baseInstrument; }
-int Voice::getCurrentInstrument() const { return currentInstrument; }
 int Voice::getCurrentBeat() const { return currentBeat; }
 char Voice::getLastNote() const { return lastNote; }
 const std::vector<VoiceEvent>& Voice::getEvents() const { return generatedEvents; }
 
 void Voice::setRawLine(const std::string& line) { rawLine = line; }
 void Voice::setDelayBeats(int delay) { delayBeats = (delay >= 0) ? delay : 0; }
-void Voice::setBaseOctave(int octave) { baseOctave = octave; }
-void Voice::setCurrentOctave(int octave) { currentOctave = octave; }
-void Voice::setBaseVolume(int volume) { baseVolume = volume; }
-void Voice::setCurrentVolume(int volume) { currentVolume = volume; }
-void Voice::setBaseInstrument(int instrument) { baseInstrument = instrument; }
-void Voice::setCurrentInstrument(int instrument) { currentInstrument = instrument; }
 void Voice::setCurrentBeat(int beat) { currentBeat = (beat >= 0) ? beat : 0; }
 void Voice::setLastNote(char note) { lastNote = note; }
 
@@ -139,7 +119,7 @@ std::string Voice::parseInitialDelay(const std::string& line) {
 
 
 
-void Voice::createInitialSilenceEvents() {
+void Voice::createInitialSilenceEvents(MusicContext& ctx) {
     for (int i = 0; i < delayBeats; ++i) {
         addEvent({
             VoiceEventType::Rest,
@@ -148,10 +128,10 @@ void Voice::createInitialSilenceEvents() {
             '\0',
             "",
             1,
-            currentVolume,
-            currentInstrument,
+            ctx.getVolume(),
+            ctx.getCurrentInstrument(),
             -1,
-            currentOctave
+            ctx.getCurrentOctave()
         });
 
         ++currentBeat;
@@ -162,13 +142,13 @@ void Voice::processLine(const std::string& line, MusicContext& ctx) {
     setRawLine(line);
     clearEvents();
 
-    // Emite os eventos de configuração inicial para que o arquivo MIDI grave o instrumento e volume padrão, e não apenas o Piano.
-    addEvent({VoiceEventType::InstrumentChange, voiceId, 0, '\0', "", 0, currentVolume, currentInstrument, -1, currentOctave});
-    addEvent({VoiceEventType::VolumeChange, voiceId, 0, '\0', "", 0, currentVolume, currentInstrument, -1, currentOctave});
-    addEvent({VoiceEventType::BpmChange, voiceId, 0, '\0', "", 0, currentVolume, currentInstrument, ctx.getBpm(), currentOctave});
+    // Emite os eventos de configuração inicial
+    addEvent({VoiceEventType::InstrumentChange, voiceId, 0, '\0', "", 0, ctx.getVolume(), ctx.getCurrentInstrument(), -1, ctx.getCurrentOctave()});
+    addEvent({VoiceEventType::VolumeChange, voiceId, 0, '\0', "", 0, ctx.getVolume(), ctx.getCurrentInstrument(), -1, ctx.getCurrentOctave()});
+    addEvent({VoiceEventType::BpmChange, voiceId, 0, '\0', "", 0, ctx.getVolume(), ctx.getCurrentInstrument(), ctx.getBpm(), ctx.getCurrentOctave()});
 
     std::string content = parseInitialDelay(line);
-    createInitialSilenceEvents();
+    createInitialSilenceEvents(ctx);
 
     for (char c : content) {
         MusicTranslator::translateChar(c, *this, ctx);
@@ -177,11 +157,6 @@ void Voice::processLine(const std::string& line, MusicContext& ctx) {
     std::cout << "[Voice " << voiceId << "] Processando linha: " << rawLine
               << " | delay=" << delayBeats
               << " | eventos=" << generatedEvents.size()
-              << " | baseOctave=" << baseOctave
-              << " | baseVolume=" << baseVolume
-              << " | baseInstrument=" << baseInstrument
-              << " | currentInstrument=" << currentInstrument
-              << " | beatFinal=" << currentBeat
               << " | BPM global=" << ctx.getBpm()
               << std::endl;
 }

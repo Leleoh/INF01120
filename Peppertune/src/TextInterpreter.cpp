@@ -37,15 +37,14 @@ void TextInterpreter::parseString(const std::string& text){
         if (customOctave != -1) {
             int calcOctave = customOctave - (voiceID % 4);
             if (calcOctave < 0) calcOctave = 0;
-            friendVoice.setBaseOctave(calcOctave);
-            friendVoice.setCurrentOctave(calcOctave);
+            newVoice.setBaseOctave(calcOctave);
+            newVoice.setCurrentOctave(calcOctave);
         }
         //mesma coisa para o volume
         if (customVolume != -1) {
             int calcVolume = customVolume - (voiceID % 4) * 20;
             if (calcVolume < 0) calcVolume = 0;
-            friendVoice.setBaseVolume(calcVolume);
-            friendVoice.setCurrentVolume(calcVolume);
+            newVoice.setVolume(calcVolume);
         }
 
         friendVoice.processLine(currentLine, newVoice);
